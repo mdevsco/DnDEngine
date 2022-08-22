@@ -34,8 +34,4 @@ struct DnDDuration {
     var value: Int
     var units: Units
     
-    init(_ duration: Int, _ durationUnits: Units) {
-        self.value = duration
-        self.units = durationUnits
-    }
 }
