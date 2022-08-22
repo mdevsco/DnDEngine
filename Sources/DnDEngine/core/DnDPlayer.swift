@@ -20,10 +20,7 @@
 import Foundation
 
 
-class DnDPlayer : DnDCreature, DnDHasExperience {
-    
-    var xp: Int = 0
-    
+class DnDPlayer : DnDCreature {
     
     var weight: Double = 0
     //var tempHitPoints: Int = 0
