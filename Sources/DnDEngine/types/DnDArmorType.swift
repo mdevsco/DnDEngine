@@ -35,4 +35,34 @@ enum DnDArmorType: String {
     
     /// Many warriors supplement their armor with a shield.
     case shield = "Shield"
+    
+    var donTime: DnDDuration {
+        get {
+            switch(self) {
+            case .light:
+                return DnDDuration(1, units: .minutes)
+            case .medium:
+                return DnDDuration(5, units: .minutes)
+            case .heavy:
+                return DnDDuration(10, units: .minutes)
+            case .shield:
+                return DnDDuration(1, units: .rounds)
+            }
+        }
+    }
+    
+    var doffTime: DnDDuration {
+        get {
+            switch(self) {
+            case .light:
+                return DnDDuration(1, units: .minutes)
+            case .medium:
+                return DnDDuration(1, units: .minutes)
+            case .heavy:
+                return DnDDuration(5, units: .minutes)
+            case .shield:
+                return DnDDuration(1, units: .rounds)
+            }
+        }
+    }
 }

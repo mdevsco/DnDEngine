@@ -90,7 +90,8 @@ struct DnDCoins: CustomStringConvertible {
         electrum = ep
     }
     
-    init(_ coinExpr:String) throws {
+    static func tryParse(_ coinExpr:String) throws -> DnDCoins {
+        var coins = DnDCoins()
         let slices = coinExpr.split(separator: " ")
         for slice in slices {
             let coinString = slice.description
@@ -98,15 +99,15 @@ struct DnDCoins: CustomStringConvertible {
                 let matches = try coinString.extractMatches(#"(\d+)(..)"#)
                 let numCoins = Int(matches[0])
                 if(matches[1] == "cp") {
-                    copper = numCoins!
+                    coins.copper = numCoins!
                 } else if(matches[1] == "sp") {
-                    silver = numCoins!
+                    coins.silver = numCoins!
                 } else if(matches[1] == "ep") {
-                    electrum = numCoins!
+                    coins.electrum = numCoins!
                 } else if(matches[1] == "gp") {
-                    gold = numCoins!
+                    coins.gold = numCoins!
                 } else if(matches[1] == "pp") {
-                    platinum = numCoins!
+                    coins.platinum = numCoins!
                 }
                 
             } catch {
@@ -114,6 +115,7 @@ struct DnDCoins: CustomStringConvertible {
             }
         }
         
+        return coins
     }
     
     // MARK: - Utility Functions

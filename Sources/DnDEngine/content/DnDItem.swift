@@ -23,8 +23,10 @@ class DnDItem : Hashable {
     /// Description of the [DnDItem] and how it is to be used.
     var description: String = ""
     
-    init(name: String) {
+    init(name: String, weight: Double, cost: String) {
         self.name = name
+        self.weight = weight
+        self.cost = try! DnDCoins.tryParse(cost)
     }
     
     // MARK: - Hashable functions
