@@ -31,6 +31,7 @@ enum DnDAlignment: String {
     case neutralEvil = "Neutral Evil"
     case chaoticEvil = "Chaotic Evil"
     
+    /// This utility method can be usefull when importing alignments from JSON.
     static func parse(alignment:String?) throws -> DnDAlignment {
         switch (alignment?.lowercased()) {
         case "lawful good", "lawful good (lg)", "lg":
