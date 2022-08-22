@@ -1,6 +1,5 @@
 //
-//  DnDCoin.swift
-//  DnDEngine
+//  DnDCoins.swift
 //
 //  Created by Rodney Aiglstorfer on 8/20/22.
 //
@@ -33,7 +32,7 @@ import Foundation
 /// suspicion and skepticism when used in transactions. An electrum piece is
 /// worth five silver pieces, and a platinum piece is worth ten gold pieces.
 ///
-struct Coins: CustomStringConvertible {
+struct DnDCoins: CustomStringConvertible {
     /// Copper (cp)
     var copper: Int = 0
     
@@ -82,7 +81,7 @@ struct Coins: CustomStringConvertible {
         return coins.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression)
     }
     
-    // MARK: - Constructors
+    // MARK: - Initializers
     init(cp: Int = 0, sp: Int = 0, ep: Int = 0, gp: Int = 0, pp: Int = 0) {
         copper = cp
         silver = sp
@@ -149,8 +148,8 @@ struct Coins: CustomStringConvertible {
     
     // MARK: - Operator Overrides
     
-    static func + (left: Coins, right:Coins) -> Coins {
-        return Coins(
+    static func + (left: DnDCoins, right:DnDCoins) -> DnDCoins {
+        return DnDCoins(
             cp: left.copper + right.copper,
             sp: left.silver + right.silver,
             ep: left.electrum + right.electrum,
@@ -158,7 +157,7 @@ struct Coins: CustomStringConvertible {
             pp: left.platinum + right.platinum)
     }
     
-    static func += (left: inout Coins, right: Coins) {
+    static func += (left: inout DnDCoins, right: DnDCoins) {
         left.copper = left.copper + right.copper
         left.silver = left.silver + right.silver
         left.electrum = left.electrum + right.electrum
@@ -166,29 +165,29 @@ struct Coins: CustomStringConvertible {
         left.platinum = left.platinum + right.platinum
     }
     
-    static func < (left: Coins, right:Coins) -> Bool {
+    static func < (left: DnDCoins, right:DnDCoins) -> Bool {
         left.value < right.value
     }
     
-    static func <= (left: Coins, right:Coins) -> Bool {
+    static func <= (left: DnDCoins, right:DnDCoins) -> Bool {
         left.value <= right.value
     }
     
-    static func > (left: Coins, right:Coins) -> Bool {
+    static func > (left: DnDCoins, right:DnDCoins) -> Bool {
         left.value > right.value
     }
     
-    static func >= (left: Coins, right:Coins) -> Bool {
+    static func >= (left: DnDCoins, right:DnDCoins) -> Bool {
         left.value >= right.value
     }
     
     ///TODO: Handle insufficent funds exception
     ///TODO: Handle making change when precise coinage not availble
-    static func - (left: Coins, right:Coins) throws -> Coins  {
+    static func - (left: DnDCoins, right:DnDCoins) throws -> DnDCoins  {
         if (left < right) {
             throw CoinError.insufficentFunds("Unabled to subtract (\(right)) from (\(left))")
         }
-        return Coins(
+        return DnDCoins(
             cp: left.copper - right.copper,
             sp: left.silver - right.silver,
             ep: left.electrum - right.electrum,
@@ -198,7 +197,7 @@ struct Coins: CustomStringConvertible {
     
     /// TODO: Handle insufficent funds exception
     /// TODO: Handle making change when precise coinage not availble
-    static func -= (left: inout Coins, right: Coins) throws {
+    static func -= (left: inout DnDCoins, right: DnDCoins) throws {
         if (left >= right) {
             left.copper = left.copper - right.copper
             left.silver = left.silver - right.silver

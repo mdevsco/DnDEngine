@@ -19,20 +19,20 @@ class DnDCoinsTests: XCTestCase {
     }
 
     func testCoinsToString() throws {
-        var coins = Coins(cp: 1, gp: 1)
+        var coins = DnDCoins(cp: 1, gp: 1)
         
         coins.copper = 1
         XCTAssertEqual("\(coins)", "1cp 1gp")
     }
     
     func testCoinsZeroWeight() throws {
-        let coins = Coins()
+        let coins = DnDCoins()
         XCTAssertEqual(coins.weight, 0)
     }
     
     func testCointMath() throws {
-        var myCoins = Coins(cp: 3)
-        let herCoins = Coins(cp: 1, gp: 1)
+        var myCoins = DnDCoins(cp: 3)
+        let herCoins = DnDCoins(cp: 1, gp: 1)
         
         myCoins += herCoins
         
@@ -49,7 +49,7 @@ class DnDCoinsTests: XCTestCase {
     }
     
     func testOptimizeWeight() throws {
-        var coins = Coins(cp: 1000, sp: 100, ep: 10, gp: 1, pp: 0)
+        var coins = DnDCoins(cp: 1000, sp: 100, ep: 10, gp: 1, pp: 0)
         
         XCTAssertEqual("\(coins)", "1000cp 100sp 10ep 1gp")
         let weightBefore = coins.weight
@@ -61,7 +61,7 @@ class DnDCoinsTests: XCTestCase {
     }
     
     func testCoinsFromExpression() throws {
-        let coins = try! Coins("100cp 200sp 300ep 400gp 500pp")
+        let coins = try! DnDCoins("100cp 200sp 300ep 400gp 500pp")
         
         XCTAssertEqual(coins.copper, 100)
         XCTAssertEqual(coins.silver, 200)
