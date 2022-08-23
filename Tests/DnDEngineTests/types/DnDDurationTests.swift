@@ -13,9 +13,9 @@ import XCTest
 class DnDDurationTests: XCTestCase {
     
     func testDurationInit() throws {
-        let duration = DnDDuration(value: 5, units: .concentration)
+        let duration = DnDDuration(5, units: .concentration)
         
         XCTAssertEqual(duration.value, 5)
-        XCTAssertEqual(duration.units, .concentration)
+        XCTAssertEqual(duration.units, DnDDuration.Units.concentration)
     }
 }

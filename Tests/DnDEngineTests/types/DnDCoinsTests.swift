@@ -61,7 +61,7 @@ class DnDCoinsTests: XCTestCase {
     }
     
     func testCoinsFromExpression() throws {
-        let coins = try! DnDCoins("100cp 200sp 300ep 400gp 500pp")
+        let coins = try! DnDCoins.tryParse("100cp 200sp 300ep 400gp 500pp")
         
         XCTAssertEqual(coins.copper, 100)
         XCTAssertEqual(coins.silver, 200)
