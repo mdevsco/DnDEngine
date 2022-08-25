@@ -24,8 +24,8 @@ class DnDPlayer : DnDCreature {
     
     var weight: Double = 0
     //var tempHitPoints: Int = 0
-    //    var race: DnDRace
-    //    var dndClass: DnDClass
+    var race: String
+    var dndClass: String
     
     //var spellcasting: DnDSpellcasting
     lazy var inventory: Set<DnDItem> = []
@@ -36,25 +36,25 @@ class DnDPlayer : DnDCreature {
     
     // MARK: - Skills
     // Strength
-    lazy var athletics = DnDSkill { self.strength.modifier }
+    lazy var athletics = DnDSkill(.athletics) { self.strength.modifier }
     
     // Dexterity
-    lazy var acrobatics  = DnDSkill{ self.dexterity.modifier }
-    lazy var sleightOfHand  = DnDSkill{ self.dexterity.modifier }
-    lazy var stealth  = DnDSkill{ self.dexterity.modifier }
+    lazy var acrobatics  = DnDSkill(.acrobatics){ self.dexterity.modifier }
+    lazy var sleightOfHand  = DnDSkill(.sleightOfHand){ self.dexterity.modifier }
+    lazy var stealth  = DnDSkill(.stealth){ self.dexterity.modifier }
     
     // Intelligence
-    lazy var history  = DnDSkill{ self.intelligence.modifier }
-    lazy var investigation  = DnDSkill{ self.intelligence.modifier }
-    lazy var nature  = DnDSkill{ self.intelligence.modifier }
-    lazy var religion  = DnDSkill{ self.intelligence.modifier }
+    lazy var history  = DnDSkill(.history){ self.intelligence.modifier }
+    lazy var investigation  = DnDSkill(.investigation){ self.intelligence.modifier }
+    lazy var nature  = DnDSkill(.nature){ self.intelligence.modifier }
+    lazy var religion  = DnDSkill(.religion){ self.intelligence.modifier }
     
     // Wisdom
-    lazy var animalHandling  = DnDSkill{ self.wisdom.modifier }
-    lazy var insight  = DnDSkill{ self.wisdom.modifier }
-    lazy var medicine  = DnDSkill{ self.wisdom.modifier }
-    lazy var perception  = DnDSkill{ self.wisdom.modifier }
-    lazy var survival  = DnDSkill{ self.wisdom.modifier }
+    lazy var animalHandling  = DnDSkill(.animalHandling){ self.wisdom.modifier }
+    lazy var insight  = DnDSkill(.insight){ self.wisdom.modifier }
+    lazy var medicine  = DnDSkill(.medicine){ self.wisdom.modifier }
+    lazy var perception  = DnDSkill(.perception){ self.wisdom.modifier }
+    lazy var survival  = DnDSkill(.survival){ self.wisdom.modifier }
     
     // Charisma
     lazy var deception  = DnDSkill{ self.charisma.modifier }
@@ -142,57 +142,5 @@ class DnDPlayer : DnDCreature {
 //    }
 }
 
-struct DnDSkill {
-    var bonus: Int
-    var proficient: Bool
-    var abilityModifier: () -> Int
-    
-    var modifier: Int {
-        // TODO When to use bonus w.r.t. modifier
-        // TOOD What about being "double proficient" (see Roge Feats for example)
-        abilityModifier()
-    }
-    
-    init(bonus: Int = 0, proficient: Bool = false, abilityModifier: @escaping () -> Int) {
-        self.bonus = bonus
-        self.proficient = proficient
-        self.abilityModifier = abilityModifier
-    }
-}
 
-struct DnDEquipment {
-    var armor: DnDArmor?
-    var mainHand: DnDWeapon?
-    var offHand: DnDItem?
-    var head: DnDItem?
-    var shoulders: DnDItem?
-    var chest: DnDItem?
-    var wrists: DnDItem?
-    var hands: DnDItem?
-    var waist: DnDItem?
-    var legs: DnDItem?
-    var feet: DnDItem?
-    
-    var neck: DnDItem?
-    var back: DnDItem?
-    var fingers: Set<DnDItem> = []
-    
-    var isShieldOn: Bool {
-        get {
-            (offHand != nil) ? offHand is DnDArmor : false;
-        }
-    }
-    
-    var isArmorOn: Bool {
-        get {
-            armor != nil;
-        }
-    }
-    
-    var weight: Double {
-        get {
-            // TODO: Implement equipment weight
-            0
-        }
-    }
-}
+
