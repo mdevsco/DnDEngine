@@ -28,6 +28,6 @@ struct DnDAbility {
     }
     
     init(_ type:DnDAbilityType) {
-        self.abilityType = type
+        self.type = type
     }
 }

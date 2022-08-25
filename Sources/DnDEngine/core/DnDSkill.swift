@@ -21,8 +21,7 @@ struct DnDSkill {
     }
     
     init(_ type: DnDSkillType, abilityModifier: @escaping () -> Int) {
-        self.bonus = bonus
-        self.proficient = proficient
+        self.type = type
         self.abilityModifier = abilityModifier
     }
 }

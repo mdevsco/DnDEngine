@@ -30,17 +30,17 @@ enum DnDSkillType: String {
     var relatedAbility : DnDAbilityType {
         get {
             switch(self) {
-            case .athletics
+            case .athletics:
                 return .strength
-            case .acrobatics, .sleightOfHand, .stealth
+            case .acrobatics, .sleightOfHand, .stealth:
                 return .dexterity
-            case .arcana, .history, .investigation, .nature, .religion
+            case .arcana, .history, .investigation, .nature, .religion:
                 return .intelligence
-            case .animalHandling, .insight, .medicine, .perception, .survival
+            case .animalHandling, .insight, .medicine, .perception, .survival:
                 return .wisdom
 //            case .deception, .intimidation, .performance, .persuasion
 //                return .charisma
-            default
+            default:
                 return .charisma
             }
         }

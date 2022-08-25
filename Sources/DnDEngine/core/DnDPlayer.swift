@@ -57,10 +57,10 @@ class DnDPlayer : DnDCreature {
     lazy var survival  = DnDSkill(.survival){ self.wisdom.modifier }
     
     // Charisma
-    lazy var deception  = DnDSkill{ self.charisma.modifier }
-    lazy var intimidation  = DnDSkill{ self.charisma.modifier }
-    lazy var performance  = DnDSkill{ self.charisma.modifier }
-    lazy var persuasion  = DnDSkill{ self.charisma.modifier }
+    lazy var deception  = DnDSkill(.deception){ self.charisma.modifier }
+    lazy var intimidation  = DnDSkill(.intimidation){ self.charisma.modifier }
+    lazy var performance  = DnDSkill(.performance){ self.charisma.modifier }
+    lazy var persuasion  = DnDSkill(.persuasion){ self.charisma.modifier }
     
     // MARK: - Computed Properties
     
@@ -124,22 +124,24 @@ class DnDPlayer : DnDCreature {
         }
     }
     
-    var spellSaveDC: Int {
-        get {
-            8 + self.spellAttack
-        }
-    }
-    var spellAttack: Int {
-        get {
-        return proficiencyBonus + abilities[dndClass.spellcastingAbility].modifier
-        }
-    }
+//    var spellSaveDC: Int {
+//        get {
+//            8 + self.spellAttack
+//        }
+//    }
+//    var spellAttack: Int {
+//        get {
+//        return proficiencyBonus + abilities[dndClass.spellcastingAbility].modifier
+//        }
+//    }
     
     // MARK: - Initializers
     
-//    init(name: String) {
-//        super.init(name: name)
-//    }
+    init(name: String, race: String, dndClass: String) {
+        self.race = race
+        self.dndClass = dndClass
+        super.init(name: name)
+    }
 }
 
 

@@ -17,7 +17,7 @@ struct DnDClass {
     var savingThrowProficiencies = Set<DnDAbilityType>()
     
     var abilityBonuses = Set<DnDAbilityType>()
-    var abilityBonusChoices = = Set<DnDAbilityType>()
+    var abilityBonusChoices = Set<DnDAbilityType>()
     
     var skillProficiencies = Set<DnDSkillType>()
     var skillProficiencyChoices = Set<DnDSkillType>()
@@ -26,5 +26,5 @@ struct DnDClass {
     
     var armorProficiencies = Set<DnDArmorType>()
     
-    var features = Set<DnDFeature>()
+    var features = [DnDFeature]()
 }
