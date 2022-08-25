@@ -124,23 +124,22 @@ class DnDPlayer : DnDCreature {
         }
     }
     
-    // TODO: Implement spellAttack & sellSaveDC
-//    var spellSaveDC: Int {
-//        get {
-//            8 + self.spellAttack
-//        }
-//    }
-//    var spellAttack: Int {
-//        get {
-//        return proficiencyBonus + abilities[dndClass.spellcastingAbility].modifier
-//        }
-//    }
+    var spellSaveDC: Int {
+        get {
+            8 + self.spellAttack
+        }
+    }
+    var spellAttack: Int {
+        get {
+        return proficiencyBonus + abilities[dndClass.spellcastingAbility].modifier
+        }
+    }
     
     // MARK: - Initializers
     
-    init(name: String, maxHitPoints: Int) {
-        super.init(name: name, maxHitPoints: maxHitPoints)
-    }
+//    init(name: String) {
+//        super.init(name: name)
+//    }
 }
 
 struct DnDSkill {

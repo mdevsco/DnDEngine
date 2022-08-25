@@ -8,8 +8,9 @@
 import Foundation
 
 class DnDMonster : DnDCreature {
-    var armorClass: Int
+    var armorClass: Int = 0
     
+    /// Used in the rules on ability checks, saving throws, and attack rolls.
     var proficiencyBonus: Int {
         get {
             switch(challengeRating) {
@@ -30,7 +31,7 @@ class DnDMonster : DnDCreature {
     /// has a challenge rating equal to its level without suffering any deaths. For example, a party
     /// of four 3rd-level characters should find a monster with a challenge rating of 3 to be a worthy
     /// challenge, but not a deadly one.
-    var challengeRating: Double {
+    var challengeRating: Double = 0 {
         /// The number of experience points (XP) a monster is worth is based on its challenge rating.
         /// Typically, XP is awarded for defeating the monster, although the DM may also award XP
         /// for neutralizing the threat posed by the monster in some other manner. Unless something
@@ -88,9 +89,7 @@ class DnDMonster : DnDCreature {
     var immunities: [DnDDamageType] = []
     
     
-    init(name: String, size: DnDSize = DnDSize.medium, alignment: DnDAlignment = DnDAlignment.neutral, speed: DnDSpeed = DnDSpeed(), maxHitPoints: Int, strength: Int = 0, dexterity: Int = 0, constitution: Int = 0, intelligence: Int = 0, wisdom: Int = 0, charisma: Int = 0, armorClass: Int, challengeRating: Double) {
-        self.armorClass = armorClass
-        self.challengeRating = challengeRating
-        super.init(name: name, size: size, alignment: alignment, speed: speed, maxHitPoints: maxHitPoints, strength: strength, dexterity: dexterity, constitution: constitution, intelligence: intelligence, wisdom: wisdom, charisma: charisma)
+    override init(name: String) {
+        super.init(name: name)
     }
 }

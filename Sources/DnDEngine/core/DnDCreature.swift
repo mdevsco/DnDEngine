@@ -20,22 +20,24 @@ class DnDCreature {
     var xp: Int = 0
     
     /// The total hit points for this creature
-    var maxHitPoints: Int
+    var maxHitPoints: Int = 0
     
     /// The current hit points this creature has
     var hitPoints: Int = 0
     
     /// The size of the creature
-    var size: DnDSize
+    var size = DnDSize.medium
     
     /// The creatures alignment
-    var alignment: DnDAlignment
+    var alignment = DnDAlignment.neutral
     
     /// The creatures various speeds
-    var speed: DnDSpeed
+    var speed = DnDSpeed()
     
     /// Languages spoken by creature
     var languages: Set<DnDLanguage> = []
+    
+    // MARK: - Computed Values
     
     /// Passive perception is a character's ability to notice what's happening around
     /// them without actively examining their surroundings. You calculate your score
@@ -47,78 +49,124 @@ class DnDCreature {
         }
     }
     
+    /// Typically, a character starts at 1st level and advances in level by adventuring
+    /// and gaining experience points (XP). A 1st-level character is inexperienced in
+    /// the adventuring world, although he or she might have been a soldier or a
+    /// pirate and done dangerous things before.
+    ///
+    /// Starting off at 1st level marks your character’s entry into the adventuring life.
+    /// If you’re already familiar with the game, or if you are joining an existing D&D
+    /// campaign, your DM might decide to have you begin at a higher level, on the
+    /// assumption that your character has already survived a few harrowing
+    /// adventures.
     var level: Int {
         get {
-            if (xp < 300) {
-                return 1;
-            } else if (xp < 900) {
-                return 2;
-            } else if (xp < 2700) {
-                return 3;
-            } else if (xp < 6500) {
-                return 4;
-            } else if (xp < 14000) {
-                return 5;
-            } else if (xp < 23000) {
-                return 6;
-            } else if (xp < 34000) {
-                return 7;
-            } else if (xp < 48000) {
-                return 8;
-            } else if (xp < 64000) {
-                return 9;
-            } else if (xp < 85000) {
-                return 10;
-            } else if (xp < 100000) {
-                return 11;
-            } else if (xp < 120000) {
-                return 12;
-            } else if (xp < 140000) {
-                return 13;
-            } else if (xp < 165000) {
-                return 14;
-            } else if (xp < 195000) {
-                return 15;
-            } else if (xp < 225000) {
-                return 16;
-            } else if (xp < 265000) {
-                return 17;
-            } else if (xp < 305000) {
-                return 18;
-            } else if (xp < 355000) {
-                return 19;
-            } else {
-                return 20;
+            switch(xp) {
+            case (0 ..< 300):
+                return 1
+            case (300 ..< 900):
+                return 2
+            case (900 ..< 2700):
+                return 3
+            case (2700 ..< 6500):
+                return 4
+            case (6500 ..< 14000):
+                return 5
+            case (14000 ..< 23000):
+                return 6
+            case (23000 ..< 34000):
+                return 7
+            case (34000 ..< 48000):
+                return 8
+            case (48000 ..< 64000):
+                return 9
+            case (64000 ..< 85000):
+                return 10
+            case (85000 ..< 100000):
+                return 11
+            case (100000 ..< 120000):
+                return 12
+            case (120000 ..< 140000):
+                return 13
+            case (140000 ..< 165000):
+                return 14
+            case (165000 ..< 195000):
+                return 15
+            case (195000 ..< 225000):
+                return 16
+            case (225000 ..< 265000):
+                return 17
+            case (265000 ..< 305000):
+                return 18
+            case (305000 ..< 355000):
+                return 19
+            default:
+                return 20
+            }
+        }
+        
+        /// **NOTE**: Setting a level explicity will reset the XP to the starting xp for the level.
+        /// The value of level is automaticall set based on xp.
+        set (newLevel) {
+            switch (newLevel) {
+            case 1:
+                xp = 0
+            case 2:
+                xp = 300
+            case 3:
+                xp = 900
+            case 4:
+                xp = 2700
+            case 5:
+                xp = 6500
+            case 6:
+                xp = 14000
+            case 7:
+                xp = 23000
+            case 8:
+                xp = 34000
+            case 9:
+                xp = 48000
+            case 10:
+                xp = 64000
+            case 11:
+                xp = 85000
+            case 12:
+                xp = 100000
+            case 13:
+                xp = 120000
+            case 14:
+                xp = 140000
+            case 15:
+                xp = 165000
+            case 16:
+                xp = 195000
+            case 17:
+                xp = 225000
+            case 18:
+                xp = 265000
+            case 19:
+                xp = 305000
+            default:
+                xp = 355000
+                
             }
         }
     }
     
     // MARK: - Abilities
-    var strength: DnDAbility
-    var dexterity: DnDAbility
-    var constitution: DnDAbility
-    var intelligence: DnDAbility
-    var wisdom: DnDAbility
-    var charisma: DnDAbility
+    var strength = DnDAbility(DnDAbilityType.strength)
+    var dexterity = DnDAbility(DnDAbilityType.dexterity)
+    var constitution = DnDAbility(DnDAbilityType.constitution)
+    var intelligence = DnDAbility(DnDAbilityType.intelligence)
+    var wisdom = DnDAbility(DnDAbilityType.wisdom)
+    var charisma = DnDAbility(DnDAbilityType.charisma)
+    
+    // MARK: - Initializers
     
     /// Quick initializer for a creature
-    init(name: String, size: DnDSize = DnDSize.medium,
-         alignment: DnDAlignment = DnDAlignment.neutral,
-         speed: DnDSpeed = DnDSpeed(), maxHitPoints: Int,
-         strength: Int = 0, dexterity: Int = 0, constitution: Int = 0,
-         intelligence: Int = 0, wisdom: Int = 0, charisma: Int = 0) {
-        
+    init(name: String) {
         self.name = name
-        self.size = size
-        self.maxHitPoints = maxHitPoints
-        self.alignment = alignment
-        self.speed = speed
-        self.strength = DnDAbility(score: strength)
-        self.dexterity = DnDAbility(score: dexterity)
-        self.constitution = DnDAbility(score: constitution)
-        self.intelligence = DnDAbility(score: intelligence)
-        self.wisdom = DnDAbility(score: wisdom)
-        self.charisma = DnDAbility(score: charisma)
     }
 }
 
@@ -127,9 +175,9 @@ struct DnDAbility {
     /// magnitude of that ability. An ability score is not just a measure of innate
     /// capabilities, but also encompasses a creature’s training and competence
     /// in activities related to that ability.
-    var score: Int
+    var score: Int = 0
     var bonus: Int = 0
-    var proficient: Bool = false
+    var type: DnDAbilityType
     
     /// Each ability also has a modifier, derived from the score and ranging from
     /// −5 (for an ability score of 1) to +10 (for a score of 30).
@@ -140,5 +188,9 @@ struct DnDAbility {
         get {
             ((score - 10) / 2) + bonus;
         }
+    }
+    
+    init(_ type:DnDAbilityType) {
+        self.abilityType = type
     }
 }
