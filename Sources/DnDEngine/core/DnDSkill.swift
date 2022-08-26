@@ -17,7 +17,11 @@ struct DnDSkill {
     var modifier: Int {
         // TODO When to use bonus w.r.t. modifier
         // TOOD What about being "double proficient" (see Roge Feats for example)
-        abilityModifier()
+        if (proficient) {
+            return abilityModifier() + bonus
+        } else {
+            return abilityModifier()
+        }
     }
     
     init(_ type: DnDSkillType, abilityModifier: @escaping () -> Int) {

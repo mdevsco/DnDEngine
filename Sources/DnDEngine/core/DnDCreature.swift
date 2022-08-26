@@ -25,6 +25,8 @@ class DnDCreature {
     /// The current hit points this creature has
     var hitPoints: Int = 0
     
+    var hitDice: String = "1d8"
+    
     /// The size of the creature
     var size = DnDSize.medium
     
