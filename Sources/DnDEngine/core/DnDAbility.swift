@@ -15,7 +15,7 @@ struct DnDAbility: CustomStringConvertible {
     /// in activities related to that ability.
     var score: Int = 0
     /// The racial bonus  + other bonuses from feats, spells or weapons
-    var bonuses: [Bonus] = []
+    var bonuses: [DnDBonus] = []
     var type: DnDAbilityType
     
     /// Each ability also has a modifier, derived from the score and ranging from
@@ -46,8 +46,5 @@ struct DnDAbility: CustomStringConvertible {
         self.type = type
     }
 }
-    
-    enum Bonus {
-        case feat(Int, String)
-        case racial(Int, String)
-    }
+
+
