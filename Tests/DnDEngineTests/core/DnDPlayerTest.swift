@@ -23,18 +23,18 @@ class DnDPlayerTest: XCTestCase {
         player1.strength.score = 8
         
         player1.dexterity.score = 16
-        player1.dexterity.bonus = 3
+        player1.dexterity.bonuses.append(Bonus.racial(2, "Elf (Drow)"))
+        player1.dexterity.bonuses.append(Bonus.feat(1, "Athlete"))
+        
         
         player1.constitution.score = 10
         
         player1.intelligence.score = 13
-        player1.intelligence.bonus = 1
+        player1.intelligence.bonuses.append(Bonus.racial(1, "Elf (Drow)"))
         
         player1.wisdom.score = 12
-        player1.wisdom.bonus = 1
         
         player1.charisma.score = 16
-        player1.charisma.bonus = 3
         
         player1.armorProficiencies.insert(DnDArmorType.light)
         XCTAssertEqual(player1.passivePerception, 15)

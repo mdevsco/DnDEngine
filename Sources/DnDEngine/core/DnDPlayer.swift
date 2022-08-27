@@ -44,6 +44,7 @@ class DnDPlayer : DnDCreature {
     lazy var stealth  = DnDSkill(.stealth){ self.dexterity.modifier }
     
     // Intelligence
+//    lazy var arcana = DnDSkill(.arcana){ self.arcana.modifier }
     lazy var history  = DnDSkill(.history){ self.intelligence.modifier }
     lazy var investigation  = DnDSkill(.investigation){ self.intelligence.modifier }
     lazy var nature  = DnDSkill(.nature){ self.intelligence.modifier }
@@ -64,6 +65,26 @@ class DnDPlayer : DnDCreature {
     
     // MARK: - Computed Properties
     
+    /// Your Armor Class (AC) represents how well your character avoids being wounded in battle.
+    /// Things that contribute to your AC include the armor you wear, the shield you carry, and your
+    /// Dexterity modifier. Not all characters wear armor or carry shields, however.
+    ///
+    /// Without armor or a shield, your character’s AC equals 10 + his or her Dexterity modifier. If
+    /// your character wears armor, carries a shield, or both, calculate your AC using the rules in the
+    /// Equipment section. Record your AC on your character sheet.
+    ///
+    /// Your character needs to be proficient with armor and shields to wear and use them effectively,
+    /// and your armor and shield proficiencies are determined by your class. There are drawbacks to
+    /// wearing armor or carrying a shield if you lack the required proficiency, as explained in the
+    /// Equipment section.
+    ///
+    /// Some spells and class features give you a different way to calculate your AC. If you have
+    /// multiple features that give you different ways to calculate your AC, you choose which one to use.
+    var armorClass: Int {
+        // TODO: If player wears armor or shield calculate AC using Equipment rules
+        return 10 + dexterity.modifier
+    }
+    
     /// The total combined weight of the player and everything they are carrying.
     var totalWeight: Double {
         get {
@@ -82,28 +103,28 @@ class DnDPlayer : DnDCreature {
     var encumbered: DnDEncumberance {
         get {
             let score = self.strength.score
-        let encumberedWeight = score * 5
-        let heavilyEmcumberedWeight = score * 10
-        if (score < encumberedWeight) {
-            return DnDEncumberance.none
-        } else if (score < heavilyEmcumberedWeight) {
-            // TODO: If you carry weight in excess of 5 times your Strength score,
-            // you are encumbered, which means your speed drops by 10 feet.
-            return DnDEncumberance.light
-        } else {
-            // TODO: If you carry weight in excess of 10 times your Strength score,
-            // up to your maximum carrying capacity, you are instead heavily
-            // encumbered, which means your speed drops by 20 feet and you
-            // have disadvantage on ability checks, attack rolls, and saving
-            // throws that use Strength, Dexterity, or Constitution.
-            return DnDEncumberance.heavy
-        }
+            let encumberedWeight = score * 5
+            let heavilyEmcumberedWeight = score * 10
+            if (score < encumberedWeight) {
+                return DnDEncumberance.none
+            } else if (score < heavilyEmcumberedWeight) {
+                // TODO: If you carry weight in excess of 5 times your Strength score,
+                // you are encumbered, which means your speed drops by 10 feet.
+                return DnDEncumberance.light
+            } else {
+                // TODO: If you carry weight in excess of 10 times your Strength score,
+                // up to your maximum carrying capacity, you are instead heavily
+                // encumbered, which means your speed drops by 20 feet and you
+                // have disadvantage on ability checks, attack rolls, and saving
+                // throws that use Strength, Dexterity, or Constitution.
+                return DnDEncumberance.heavy
+            }
         }
     }
     
     /// The player's proficiency bonus.
-    /// TODO: Is there a potential for bonuses to proficiency?
     var proficiencyBonus: Int {
+        // TODO: Is there a potential for bonuses to proficiency?
         get {
          (1 + (self.level / 4))
         }
@@ -113,16 +134,11 @@ class DnDPlayer : DnDCreature {
     /// to [rollInitiative].
     var initiative: Int {
         get {
+            // TODO: How to compute initiative
             self.dexterity.modifier
         }
     }
     
-    /// Passive wisdom modifier used by the [DnDEngine] to [rollPassiveWisdom].
-    var passiveWisdom: Int {
-        get {
-        self.wisdom.modifier + 10
-        }
-    }
     
 //    var spellSaveDC: Int {
 //        get {
