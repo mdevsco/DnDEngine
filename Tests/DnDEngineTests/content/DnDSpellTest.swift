@@ -16,5 +16,7 @@ class DnDSpellTest: XCTestCase {
         let spells = DnDSpell.loadFromFile()
         
         XCTAssertFalse(spells.isEmpty)
+        
+        print(spells[0...4])
     }
 }

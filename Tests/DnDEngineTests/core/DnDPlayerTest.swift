@@ -23,14 +23,14 @@ class DnDPlayerTest: XCTestCase {
         player1.strength.score = 8
         
         player1.dexterity.score = 16
-        player1.dexterity.bonuses.append(Bonus.racial(2, "Elf (Drow)"))
-        player1.dexterity.bonuses.append(Bonus.feat(1, "Athlete"))
+        player1.dexterity.bonuses.append(DnDBonus.racial(2, "Elf (Drow)"))
+        player1.dexterity.bonuses.append(DnDBonus.feat(1, "Athlete"))
         
         
         player1.constitution.score = 10
         
         player1.intelligence.score = 13
-        player1.intelligence.bonuses.append(Bonus.racial(1, "Elf (Drow)"))
+        player1.intelligence.bonuses.append(DnDBonus.racial(1, "Elf (Drow)"))
         
         player1.wisdom.score = 12
         
