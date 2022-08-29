@@ -1,5 +1,5 @@
 //
-//  DnDMagicSchools.swift
+//  DnDMagicSchool.swift
 //  
 //
 //  Created by Rodney Aiglstorfer on 8/25/22.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DnDMagicSchools: String {
+enum DnDMagicSchool: String, Decodable {
     
     /// Abjuration spells are protective in nature, though some of them have aggressive uses.
     /// They create magical barriers, negate harmful effects, harm trespassers, or banish
