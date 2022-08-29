@@ -24,6 +24,35 @@ import Foundation
 /// one for each of the four elemental planes. Creatures that
 /// speak different dialects of the same language can
 /// communicate with one another.
-struct DnDLanguage: Hashable {
+struct DnDLanguage: Hashable, Identifiable {
+    let id: String?
     let name: String
+    let description: String?
+    let type: String?
+    let typicalSpeakers: [String]?
+    let script: String?
+}
+
+extension DnDLanguage: Decodable {
+    private enum CodeKeys: String, CodingKey {
+        case id = "index"
+        case name
+        case description = "desc"
+        case type
+        case typicalSpeakers = "typical_speakers"
+        case script
+    }
+    
+    static func loadFromFile() throws -> [DnDLanguage] {
+        guard let sourceURL = Bundle.module.url(forResource: "5e-SRD-Languages", withExtension: "json") else {
+            fatalError("Could not find 5e-SRD-Languages.json")
+        }
+        
+        guard let data = try? Data(contentsOf: sourceURL) else {
+            fatalError("Could not convert to data")
+        }
+        
+        let decoder = JSONDecoder()
+        return try decoder.decode([DnDLanguage].self, from: data)
+    }
 }
