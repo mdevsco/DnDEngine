@@ -7,23 +7,71 @@
 
 import Foundation
 
-struct DnDSpell: Decodable {
+struct DnDSpell {
     var name: String
-    var desc: [String]
-    var higher_level: [String]?
-    var page: String?
+    var description: [String]?
+    var higherLevelDescription: [String]?
+    // TODO: Convert to use DnDRange instead of String
     var range: String?
-    var components: [String]?
+    var components: [DnDSpellComponent] = []
     var material: String?
-    var ritual: Bool?
+    var isRitual: Bool?
     var duration: String?
-    var concentration: Bool?
-    var casting_time: String?
+    var ritual: Bool = false
+    var requiresConcentration: Bool = false
+    var castingTime: String?
     var level: Int?
+    var school: DnDMagicSchool
+}
+
+// MARK: - Extension for JSON Decodable
+extension DnDSpell: Decodable {
+    struct JSONMagicSchool: Decodable {
+        let name: String
+    }
+    
+    private enum CodingKeys: String, CodingKey {
+        case id = "index"
+        case name
+        case description = "desc"
+        case higherLevelDescription = "higher_level"
+        case range
+        case material
+        case isRitual = "ritual"
+        case duration
+        case requiresConcentration = "concentration"
+        case castingTime = "casting_time"
+        case level
+        case school
+    }
+    
+    init(from decoder: Decoder) throws {
+        let values = try decoder.container(keyedBy: CodingKeys.self)
+        name = try values.decode(String.self, forKey: .name)
+        description = try values.decodeIfPresent([String].self, forKey: .description)
+        higherLevelDescription = try values.decodeIfPresent([String].self, forKey: .higherLevelDescription)
+        range = try values.decodeIfPresent(String.self, forKey: .range)
+        material = try values.decodeIfPresent(String.self, forKey: .material)
+        isRitual = try values.decodeIfPresent(Bool.self, forKey: .isRitual)
+        duration = try values.decodeIfPresent(String.self, forKey: .duration)
+        requiresConcentration = try values.decodeIfPresent(Bool.self, forKey: .requiresConcentration)!
+        castingTime = try values.decodeIfPresent(String.self, forKey: .castingTime)
+        level = try values.decodeIfPresent(Int.self, forKey: .level)
+        
+        // manually decode **school** into the custom type
+        let jsonSchool = try values.decodeIfPresent(JSONMagicSchool.self, forKey: .school)
+        
+        // check if you can create an enum from the given string and throw appropriate error
+        guard let schoolEnum = DnDMagicSchool(rawValue: jsonSchool!.name) else{
+            throw DecodingError.dataCorrupted(.init(codingPath: [CodingKeys.school], debugDescription: "school has unknown value"))
+        }
+        // assign enum
+        self.school = schoolEnum
+    }
     
     static func loadFromFile() -> [DnDSpell] {
 
-        guard let sourceURL = Bundle.main.url(forResource: "spells", withExtension: "json") else {
+        guard let sourceURL = Bundle.module.url(forResource: "spells", withExtension: "json") else {
             fatalError("Could not find spells.json")
         }
         
@@ -32,12 +80,14 @@ struct DnDSpell: Decodable {
         }
         
         let decoder = JSONDecoder()
-        guard let spells = try? decoder.decode([DnDSpell].self, from: spellData) else {
-            fatalError("There was a problem decoding the data")
+        do {
+            let spells = try decoder.decode([DnDSpell].self, from: spellData)
+            
+            return spells
+        } catch {
+            print(">>>> ERROR PARSING JSON <<<<<")
+            print(error)
         }
-        
-        return spells
+        return []
     }
 }
-
-
