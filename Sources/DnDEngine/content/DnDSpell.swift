@@ -8,17 +8,18 @@
 import Foundation
 
 struct DnDSpell {
+    var id: String
     var name: String
     var description: [String]?
     var higherLevelDescription: [String]?
     // TODO: Convert to use DnDRange instead of String
     var range: String?
-    var components: [DnDSpellComponent] = []
+    var components: [DnDSpellComponent]?
     var material: String?
     var isRitual: Bool?
     var duration: String?
     var ritual: Bool = false
-    var requiresConcentration: Bool = false
+    var requiresConcentration: Bool? = nil
     var castingTime: String?
     var level: Int?
     var school: DnDMagicSchool
@@ -36,6 +37,7 @@ extension DnDSpell: Decodable {
         case description = "desc"
         case higherLevelDescription = "higher_level"
         case range
+        case components
         case material
         case isRitual = "ritual"
         case duration
@@ -47,10 +49,12 @@ extension DnDSpell: Decodable {
     
     init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
+        id = try values.decode(String.self, forKey: .id)
         name = try values.decode(String.self, forKey: .name)
         description = try values.decodeIfPresent([String].self, forKey: .description)
         higherLevelDescription = try values.decodeIfPresent([String].self, forKey: .higherLevelDescription)
         range = try values.decodeIfPresent(String.self, forKey: .range)
+        components = try values.decodeIfPresent([DnDSpellComponent].self, forKey: .components)
         material = try values.decodeIfPresent(String.self, forKey: .material)
         isRitual = try values.decodeIfPresent(Bool.self, forKey: .isRitual)
         duration = try values.decodeIfPresent(String.self, forKey: .duration)
@@ -69,25 +73,19 @@ extension DnDSpell: Decodable {
         self.school = schoolEnum
     }
     
-    static func loadFromFile() -> [DnDSpell] {
-
-        guard let sourceURL = Bundle.module.url(forResource: "spells", withExtension: "json") else {
-            fatalError("Could not find spells.json")
+    static func loadFromFile(_ filename: String) throws -> [DnDSpell] {
+        guard let sourceURL = Bundle.module.url(forResource: filename, withExtension: "json") else {
+            fatalError("Could not find \(filename).json")
         }
         
-        guard let spellData = try? Data(contentsOf: sourceURL) else {
+        guard let data = try? Data(contentsOf: sourceURL) else {
             fatalError("Could not convert to data")
         }
         
-        let decoder = JSONDecoder()
-        do {
-            let spells = try decoder.decode([DnDSpell].self, from: spellData)
-            
-            return spells
-        } catch {
-            print(">>>> ERROR PARSING JSON <<<<<")
-            print(error)
-        }
-        return []
+        return try loadFromData(data)
+    }
+    
+    static func loadFromData(_ data:Data) throws -> [DnDSpell] {
+        return try JSONDecoder().decode([DnDSpell].self, from: data)
     }
 }
