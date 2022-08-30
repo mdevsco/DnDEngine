@@ -7,39 +7,39 @@
 
 import Foundation
 
-struct DnDRace {
+public struct DnDRace {
     /// The name of the race
-    var name: String
+    public var name: String
     
-    var alignment = DnDAlignment.neutral
+    public var alignment = DnDAlignment.neutral
     
-    var size = DnDSize.medium;
+    public var size = DnDSize.medium;
     
     /// Your speed determines how far you can move
     /// when traveling ( “Adventuring”) and
     /// fighting (“Combat”).
-    var speed = DnDSpeed()
+    public var speed = DnDSpeed()
     
-    var languages = Set<DnDLanguage>()
-    var languageChoices = Set<DnDLanguage>()
+    public var languages = Set<DnDLanguage>()
+    public var languageChoices = Set<DnDLanguage>()
     
     /// If a creature or an object has resistance to a
     /// damage type, damage of that type is halved against it.
-    var resistances = Set<DnDDamageType>()
+    public var resistances = Set<DnDDamageType>()
     
     /// If a creature or an object has vulnerability to a
     /// damage type, damage of that type is doubled against it.
-    var vulnerabilies = Set<DnDDamageType>()
+    public var vulnerabilies = Set<DnDDamageType>()
     
-    var savingThrowProficiencies = Set<DnDAbilityType>()
+    public var savingThrowProficiencies = Set<DnDAbilityType>()
     
-    var abilityBonuses = Set<DnDAbilityType>()
-    var abilityBonusChoices = Set<DnDAbilityType>()
+    public var abilityBonuses = Set<DnDAbilityType>()
+    public var abilityBonusChoices = Set<DnDAbilityType>()
     
-    var skillProficiencies = Set<DnDSkillType>()
-    var skillProficiencyChoices = Set<DnDSkillType>()
+    public var skillProficiencies = Set<DnDSkillType>()
+    public var skillProficiencyChoices = Set<DnDSkillType>()
     
-    var weaponProficiencies = Set<DnDWeaponCategory>()
+    public var weaponProficiencies = Set<DnDWeaponCategory>()
     
-    var armorProficiencies = Set<DnDArmorType>()
+    public var armorProficiencies = Set<DnDArmorType>()
 }

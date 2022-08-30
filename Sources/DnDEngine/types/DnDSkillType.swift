@@ -38,9 +38,7 @@ public enum DnDSkillType: String {
                 return .intelligence
             case .animalHandling, .insight, .medicine, .perception, .survival:
                 return .wisdom
-//            case .deception, .intimidation, .performance, .persuasion
-//                return .charisma
-            default:
+            case .deception, .intimidation, .performance, .persuasion:
                 return .charisma
             }
         }

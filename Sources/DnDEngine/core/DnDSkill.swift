@@ -8,13 +8,13 @@
 import Foundation
 
 
-struct DnDSkill {
-    var bonus: Int = 0
-    var proficient: Bool = false
-    var abilityModifier: () -> Int
-    var type: DnDSkillType
+public struct DnDSkill {
+    public var bonus: Int = 0
+    public var proficient: Bool = false
+    public var abilityModifier: () -> Int
+    public var type: DnDSkillType
     
-    var modifier: Int {
+    public var modifier: Int {
         // TODO When to use bonus w.r.t. modifier
         // TOOD What about being "double proficient" (see Roge Feats for example)
         if (proficient) {
@@ -24,7 +24,7 @@ struct DnDSkill {
         }
     }
     
-    init(_ type: DnDSkillType, abilityModifier: @escaping () -> Int) {
+    public init(_ type: DnDSkillType, abilityModifier: @escaping () -> Int) {
         self.type = type
         self.abilityModifier = abilityModifier
     }

@@ -19,36 +19,130 @@
 
 import Foundation
 
-
-class DnDPlayer : DnDCreature {
+/// Instances of this class are created for every player (or NPC?).  It contains all the active
+/// stats for the character as well as dynamically computed values for any stat that isn't
+/// configured at creation time.
+public class DnDPlayer {
     
-    var weight: Double = 0
-    //var tempHitPoints: Int = 0
-    var race: String
-    var dndClass: String
+    /// Name of the creature.  For Monsters, this may be
+    /// a generic name whereas for Players it may be
+    /// unique to an individual.
+    public var name: String
     
-    //var spellcasting: DnDSpellcasting
-    lazy var inventory: Set<DnDItem> = []
+    /// A description of the creature.
+    public var description: String = ""
     
-    lazy var armorProficiencies: Set<DnDArmorType> = []
-    lazy var equipment = DnDEquipment()
-    lazy var coins = DnDCoins()
+    /// Experience the creature has
+    public var xp: Int = 0
+    
+    /// The total hit points for this creature
+    public var maxHitPoints: Int = 0
+    
+    /// You gain the hit points from your new class as described for levels after 1st.
+    /// You gain the 1st-level hit points for a class only when you are a 1st-level
+    /// character.
+    ///
+    /// You add together the Hit Dice granted by all your classes to form your pool
+    /// of Hit Dice. If the Hit Dice are the same die type, you can simply pool them
+    /// together. For example, both the fighter and the paladin have a d10, so if you
+    /// are a paladin 5/fighter 5, you have ten d10 Hit Dice. If your classes give you
+    /// Hit Dice of different types, keep track of them separately. If you are a paladin
+    /// 5/cleric 5, for example, you have five d10 Hit Dice and five d8 Hit Dice.
+    public var hitPoints: Int = 0
+    
+    // TODO: Need to support multiple hitDice see Paladin
+    // TODO: Need to compute number of dice by level (or ??)
+    /// This line gives the creature’s number and type of Hit Dice, and lists any bonus
+    /// hit points. A parenthetical note gives the average hit points for a creature of
+    /// the indicated number of Hit Dice. A creature’s Hit Dice total is also treated as
+    /// its level for determining how spells affect the creature, its rate of natural
+    /// healing, and its maximum ranks in a skill.
+    public var hitDice: String = "1d8"
+    
+    /// The size of the player's
+    public var size = DnDSize.medium
+    
+    /// The player's alignment
+    public var alignment = DnDAlignment.neutral
+    
+    /// The  player's various speeds
+    public var speed = DnDSpeed()
+    
+    /// Languages spoken by creature
+    public var languages: Set<DnDLanguage> = []
+    
+    /// The weight of the player typically defined by the ``DnDRace``
+    public var weight: Double = 0
+    
+    /// Some spells and special abilities confer temporary hit points to a creature.
+    /// Temporary hit points aren't actual hit points; they are a buffer against damage,
+    /// a pool of hit points that protect you from injury.
+    ///
+    /// When you have temporary hit points and take damage, the temporary hit points
+    /// are lost first, and any leftover damage carries over to your normal hit points. For
+    /// example, if you have 5 temporary hit points and take 7 damage, you lose the
+    /// temporary hit points and then take 2 damage.
+    ///
+    /// Because temporary hit points are separate from your actual hit points, they can
+    /// exceed your hit point maximum. A character can, therefore, be at full hit points
+    /// and receive temporary hit points.
+    ///
+    /// Healing can't restore temporary hit points, and they can't be added together. If
+    /// you have temporary hit points and receive more of them, you decide whether to
+    /// keep the ones you have or to gain the new ones. For example, if a spell grants
+    /// you 12 temporary hit points when you already have 10, you can have 12 or 10,
+    /// not 22.
+    ///
+    /// If you have 0 hit points, receiving temporary hit points doesn't restore you to
+    /// consciousness or stabilize you. They can still absorb damage directed at you
+    /// while you're in that state, but only true healing can save you.
+    ///
+    /// Unless a feature that grants you temporary hit points has a duration, they last
+    /// until they're depleted or you finish a long rest.
+    public var tempHitPoints: Int = 0
+    
+    /// Race refers to the fantasy species or ancestry of a character.
+    public var race: String? = nil
+    
+    /// There are 12 basic classes in D&D: Barbarian, bard, cleric, druid, fighter, monk,
+    /// paladin, ranger, rogue, sorcerer, warlock and wizard.
+    public var classType: DnDClassType? = nil
+    
+    /// Your Spellcasting Ability is determined by which base ability your character
+    /// uses to power their spells. For example, Sorcerers get their spellcasting power
+    /// from their Charisma, so their Spellcasting Ability is Charisma. Your Spellcasting
+    /// Ability modifier is a number taken from the ability used to power the spells.
+    public var spellcastingAbility: DnDAbilityType? = nil
+    
+    public var inventory: Set<DnDItem> = []
+    
+    public var armorProficiencies: Set<DnDArmorType> = []
+    public var equipment = DnDEquipment()
+    public var coins = DnDCoins()
+    
+    // MARK: - Abilities
+    public var strength = DnDAbility(DnDAbilityType.strength)
+    public var dexterity = DnDAbility(DnDAbilityType.dexterity)
+    public var constitution = DnDAbility(DnDAbilityType.constitution)
+    public var intelligence = DnDAbility(DnDAbilityType.intelligence)
+    public var wisdom = DnDAbility(DnDAbilityType.wisdom)
+    public var charisma = DnDAbility(DnDAbilityType.charisma)
     
     // MARK: - Skills
     // Strength
-    lazy var athletics = DnDSkill(.athletics) { self.strength.modifier }
+    public lazy var athletics = DnDSkill(.athletics) { self.strength.modifier }
     
     // Dexterity
-    lazy var acrobatics  = DnDSkill(.acrobatics){ self.dexterity.modifier }
-    lazy var sleightOfHand  = DnDSkill(.sleightOfHand){ self.dexterity.modifier }
-    lazy var stealth  = DnDSkill(.stealth){ self.dexterity.modifier }
+    public lazy var acrobatics  = DnDSkill(.acrobatics){ self.dexterity.modifier }
+    public lazy var sleightOfHand  = DnDSkill(.sleightOfHand){ self.dexterity.modifier }
+    public lazy var stealth  = DnDSkill(.stealth){ self.dexterity.modifier }
     
     // Intelligence
-//    lazy var arcana = DnDSkill(.arcana){ self.arcana.modifier }
-    lazy var history  = DnDSkill(.history){ self.intelligence.modifier }
-    lazy var investigation  = DnDSkill(.investigation){ self.intelligence.modifier }
-    lazy var nature  = DnDSkill(.nature){ self.intelligence.modifier }
-    lazy var religion  = DnDSkill(.religion){ self.intelligence.modifier }
+    public lazy var arcana = DnDSkill(.arcana){ self.intelligence.modifier }
+    public lazy var history  = DnDSkill(.history){ self.intelligence.modifier }
+    public lazy var investigation  = DnDSkill(.investigation){ self.intelligence.modifier }
+    public lazy var nature  = DnDSkill(.nature){ self.intelligence.modifier }
+    public lazy var religion  = DnDSkill(.religion){ self.intelligence.modifier }
     
     // Wisdom
     lazy var animalHandling  = DnDSkill(.animalHandling){ self.wisdom.modifier }
@@ -58,12 +152,52 @@ class DnDPlayer : DnDCreature {
     lazy var survival  = DnDSkill(.survival){ self.wisdom.modifier }
     
     // Charisma
-    lazy var deception  = DnDSkill(.deception){ self.charisma.modifier }
-    lazy var intimidation  = DnDSkill(.intimidation){ self.charisma.modifier }
-    lazy var performance  = DnDSkill(.performance){ self.charisma.modifier }
-    lazy var persuasion  = DnDSkill(.persuasion){ self.charisma.modifier }
+    public lazy var deception  = DnDSkill(.deception){ self.charisma.modifier }
+    public lazy var intimidation  = DnDSkill(.intimidation){ self.charisma.modifier }
+    public lazy var performance  = DnDSkill(.performance){ self.charisma.modifier }
+    public lazy var persuasion  = DnDSkill(.persuasion){ self.charisma.modifier }
+
+    // MARK: - Initializers
     
-    // MARK: - Computed Properties
+    /// Quick initializer for a creature
+    public init(name: String) {
+        self.name = name
+    }
+
+    // MARK: - Computed Values
+    
+    /// The DC to resist one of your Spells equals 8 + your Spellcasting ability modifier +
+    /// your Proficiency bonus + any Special Modifiers.
+    public var spellSaveDC: Int {
+        get {
+            8 + self.spellAttackBonus
+        }
+    }
+    
+    /// Some Spells require the caster to make an Attack roll to determine whether the spell
+    /// Effect hits the intended target. Your Attack bonus with a spell Attack equals your
+    /// Spellcasting ability modifier + your Proficiency bonus. Most Spells that require Attack
+    /// rolls involve Ranged Attacks.
+    var spellAttackBonus: Int {
+        get {
+            switch (spellcastingAbility) {
+            case .strength:
+                return proficiencyBonus + strength.modifier
+            case .dexterity:
+                return proficiencyBonus + dexterity.modifier
+            case .constitution:
+                return proficiencyBonus + constitution.modifier
+            case .wisdom:
+                return proficiencyBonus + wisdom.modifier
+            case .intelligence:
+                return proficiencyBonus + intelligence.modifier
+            case .charisma:
+                return proficiencyBonus + charisma.modifier
+            default:
+                return 0
+            }
+        }
+    }
     
     /// Your Armor Class (AC) represents how well your character avoids being wounded in battle.
     /// Things that contribute to your AC include the armor you wear, the shield you carry, and your
@@ -99,7 +233,7 @@ class DnDPlayer : DnDCreature {
         }
     }
     
-    /// The player's level of [DnDEncumberance] based on their [carryCapacity].
+    /// The player's level of ``DnDEncumberance`` based on their ``carryCapacity``.
     var encumbered: DnDEncumberance {
         get {
             let score = self.strength.score
@@ -130,8 +264,7 @@ class DnDPlayer : DnDCreature {
         }
     }
     
-    /// The initiative modifier value for the player, used by the [DnDEngine]
-    /// to [rollInitiative].
+    /// The initiative modifier value for the player, used by the ``DnDEngine.rollInitiative``.
     var initiative: Int {
         get {
             // TODO: How to compute initiative
@@ -139,24 +272,36 @@ class DnDPlayer : DnDCreature {
         }
     }
     
+    /// Passive perception is a character's ability to notice what's happening around
+    /// them without actively examining their surroundings. You calculate your score
+    /// by adding 10 to their perception modifier, which is their Wisdom modifier plus
+    /// their proficiency bonus if proficient.
+    var passivePerception: Int {
+        get {
+            return 10 + wisdom.modifier
+        }
+    }
     
-//    var spellSaveDC: Int {
-//        get {
-//            8 + self.spellAttack
-//        }
-//    }
-//    var spellAttack: Int {
-//        get {
-//        return proficiencyBonus + abilities[dndClass.spellcastingAbility].modifier
-//        }
-//    }
-    
-    // MARK: - Initializers
-    
-    init(name: String, race: String, dndClass: String) {
-        self.race = race
-        self.dndClass = dndClass
-        super.init(name: name)
+    /// Typically, a character starts at 1st level and advances in level by adventuring
+    /// and gaining experience points (XP). A 1st-level character is inexperienced in
+    /// the adventuring world, although he or she might have been a soldier or a
+    /// pirate and done dangerous things before.
+    ///
+    /// Starting off at 1st level marks your character’s entry into the adventuring life.
+    /// If you’re already familiar with the game, or if you are joining an existing D&D
+    /// campaign, your DM might decide to have you begin at a higher level, on the
+    /// assumption that your character has already survived a few harrowing
+    /// adventures.
+    var level: Int {
+        get {
+            convertXPToLevel(self.xp)
+        }
+        
+        /// **NOTE**: Setting a level explicity will reset the XP to the starting xp for the level.
+        /// The value of level is automaticall set based on xp.
+        set (newLevel) {
+            self.xp = convertLevelToXP(newLevel)
+        }
     }
 }
 

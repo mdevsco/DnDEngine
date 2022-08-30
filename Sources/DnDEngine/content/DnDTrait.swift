@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct DnDTrait {
-    var name: String
-    var races = Set<String>()
-    var description: String?
+public struct DnDTrait {
+    public var name: String
+    public var races = Set<String>()
+    public var description: String?
     // TODO Need way to translate the description into actionable logic.
 }

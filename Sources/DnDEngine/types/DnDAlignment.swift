@@ -57,12 +57,8 @@ public enum DnDAlignment: String {
             return neutral
         default:
             let msg = "\"\(alignment as Optional)\" is not a valignmentalignment."
-            throw DnDAlignmentError.unableToParse(msg)
+            throw DnDError.unableToParse(msg)
         }
     }
 }
 
-// TODO: Extract to DnDError
-public enum DnDAlignmentError : Error {
-    case unableToParse(String)
-}

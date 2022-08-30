@@ -7,27 +7,27 @@
 
 import Foundation
 
-struct DnDSpell {
-    var id: String
-    var name: String
-    var description: [String]?
-    var higherLevelDescription: [String]?
+public struct DnDSpell {
+    public var id: String
+    public var name: String
+    public var description: [String]?
+    public var higherLevelDescription: [String]?
     // TODO: Convert to use DnDRange instead of String
-    var range: String?
-    var components: [DnDSpellComponent]?
-    var material: String?
-    var isRitual: Bool?
-    var duration: String?
-    var ritual: Bool = false
-    var requiresConcentration: Bool? = nil
-    var castingTime: String?
-    var level: Int?
-    var school: DnDMagicSchool
+    public var range: String?
+    public var components: [DnDSpellComponent]?
+    public var material: String?
+    public var isRitual: Bool?
+    public var duration: String?
+    public var ritual: Bool = false
+    public var requiresConcentration: Bool? = nil
+    public var castingTime: String?
+    public var level: Int?
+    public var school: DnDMagicSchool
 }
 
 // MARK: - Extension for JSON Decodable
 extension DnDSpell: Decodable {
-    struct JSONMagicSchool: Decodable {
+    private struct JSONMagicSchool: Decodable {
         let name: String
     }
     
@@ -47,7 +47,7 @@ extension DnDSpell: Decodable {
         case school
     }
     
-    init(from decoder: Decoder) throws {
+    public init(from decoder: Decoder) throws {
         let values = try decoder.container(keyedBy: CodingKeys.self)
         id = try values.decode(String.self, forKey: .id)
         name = try values.decode(String.self, forKey: .name)
@@ -73,7 +73,7 @@ extension DnDSpell: Decodable {
         self.school = schoolEnum
     }
     
-    static func loadFromFile(_ filename: String) throws -> [DnDSpell] {
+    public static func loadFromFile(_ filename: String) throws -> [DnDSpell] {
         guard let sourceURL = Bundle.module.url(forResource: filename, withExtension: "json") else {
             fatalError("Could not find \(filename).json")
         }
@@ -85,7 +85,7 @@ extension DnDSpell: Decodable {
         return try loadFromData(data)
     }
     
-    static func loadFromData(_ data:Data) throws -> [DnDSpell] {
+    public static func loadFromData(_ data:Data) throws -> [DnDSpell] {
         return try JSONDecoder().decode([DnDSpell].self, from: data)
     }
 }

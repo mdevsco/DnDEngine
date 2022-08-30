@@ -111,7 +111,7 @@ public struct DnDCoins: CustomStringConvertible {
                 }
                 
             } catch {
-                throw CoinError.unableToParse("Unable to parse [\(coinString)]")
+                throw DnDError.unableToParse("Unable to parse [\(coinString)]")
             }
         }
         
@@ -187,7 +187,7 @@ public struct DnDCoins: CustomStringConvertible {
     // TODO: Handle making change when precise coinage not availble
     public static func - (left: DnDCoins, right:DnDCoins) throws -> DnDCoins  {
         if (left < right) {
-            throw CoinError.insufficentFunds("Unabled to subtract (\(right)) from (\(left))")
+            throw DnDError.insufficentFunds("Unabled to subtract (\(right)) from (\(left))")
         }
         return DnDCoins(
             cp: left.copper - right.copper,
@@ -207,7 +207,7 @@ public struct DnDCoins: CustomStringConvertible {
             left.gold = left.gold - right.gold
             left.platinum = left.platinum - right.platinum
         } else {
-            throw CoinError.insufficentFunds("Unabled to subtract (\(right)) from (\(left))")
+            throw DnDError.insufficentFunds("Unabled to subtract (\(right)) from (\(left))")
         }
     }
 }
@@ -220,9 +220,4 @@ public enum CointUnit: String {
     case platinum = "pp"
 }
 
-// TODO: Move into DnDError
-public enum CoinError : Error {
-    case insufficentFunds(String)
-    case noExactChange(String)
-    case unableToParse(String)
-}
+

@@ -8,7 +8,7 @@
 import Foundation
 
 class DnDCombatSession {
-    private var orderOfCombat: [DnDCreature] = []
+    private var orderOfCombat: [DnDPlayer] = []
     private var turn = 0
     private var round = 0
     

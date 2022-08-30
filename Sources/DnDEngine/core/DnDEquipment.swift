@@ -7,36 +7,36 @@
 
 import Foundation
 
-struct DnDEquipment {
-    var armor: DnDArmor?
-    var mainHand: DnDWeapon?
-    var offHand: DnDItem?
-    var head: DnDItem?
-    var shoulders: DnDItem?
-    var chest: DnDItem?
-    var wrists: DnDItem?
-    var hands: DnDItem?
-    var waist: DnDItem?
-    var legs: DnDItem?
-    var feet: DnDItem?
+public struct DnDEquipment {
+    public var armor: DnDArmor?
+    public var mainHand: DnDWeapon?
+    public var offHand: DnDItem?
+    public var head: DnDItem?
+    public var shoulders: DnDItem?
+    public var chest: DnDItem?
+    public var wrists: DnDItem?
+    public var hands: DnDItem?
+    public var waist: DnDItem?
+    public var legs: DnDItem?
+    public var feet: DnDItem?
     
-    var neck: DnDItem?
-    var back: DnDItem?
-    var fingers: Set<DnDItem> = []
+    public var neck: DnDItem?
+    public var back: DnDItem?
+    public var fingers: Set<DnDItem> = []
     
-    var isShieldOn: Bool {
+    public var isShieldOn: Bool {
         get {
             (offHand != nil) ? offHand is DnDArmor : false;
         }
     }
     
-    var isArmorOn: Bool {
+    public var isArmorOn: Bool {
         get {
             armor != nil;
         }
     }
     
-    var weight: Double {
+    public var weight: Double {
         get {
             // TODO: Implement equipment weight
             0
