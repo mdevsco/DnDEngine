@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DnDSkillType: String {
+public enum DnDSkillType: String {
     case athletics = "Athletics"
     case acrobatics = "Acrobatics"
     case sleightOfHand = "Sleight of Hand"

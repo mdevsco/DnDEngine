@@ -7,7 +7,7 @@
 
 import Foundation
  
-enum DnDAbilityType: String {
+public enum DnDAbilityType: String {
     case strength = "Strength"
     case dexterity = "Dexterity"
     case constitution = "Constitution"

@@ -16,7 +16,7 @@ import Foundation
 /// failure, which means the character or monster makes
 /// no progress toward the objective or makes progress
 /// combined with a setback determined by the DM.
-enum DnDDifficulty: Int {
+public enum DnDDifficulty: Int {
     case veryEasy = 5
     case easy  = 10
     case medium = 15

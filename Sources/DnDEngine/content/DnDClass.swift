@@ -7,24 +7,24 @@
 
 import Foundation
 
-struct DnDClass {
-    var name: String
+public struct DnDClass {
+    public var name: String
     
-    var hitDie: String
+    public var hitDie: String
     
-    var spellcastingAbility: DnDAbilityType
+    public var spellcastingAbility: DnDAbilityType
     
-    var savingThrowProficiencies = Set<DnDAbilityType>()
+    public var savingThrowProficiencies = Set<DnDAbilityType>()
     
-    var abilityBonuses = Set<DnDAbilityType>()
-    var abilityBonusChoices = Set<DnDAbilityType>()
+    public var abilityBonuses = Set<DnDAbilityType>()
+    public var abilityBonusChoices = Set<DnDAbilityType>()
     
-    var skillProficiencies = Set<DnDSkillType>()
-    var skillProficiencyChoices = Set<DnDSkillType>()
+    public var skillProficiencies = Set<DnDSkillType>()
+    public var skillProficiencyChoices = Set<DnDSkillType>()
     
-    var weaponProficiencies = Set<DnDWeaponCategory>()
+    public var weaponProficiencies = Set<DnDWeaponCategory>()
     
-    var armorProficiencies = Set<DnDArmorType>()
+    public var armorProficiencies = Set<DnDArmorType>()
     
-    var features = [DnDFeature]()
+    public var features = [DnDFeature]()
 }

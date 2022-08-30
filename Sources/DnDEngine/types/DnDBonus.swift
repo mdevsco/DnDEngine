@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DnDBonus {
+public enum DnDBonus {
     case feat(Int, String)
     case racial(Int, String)
     // TODO: equipment (Bonus)?

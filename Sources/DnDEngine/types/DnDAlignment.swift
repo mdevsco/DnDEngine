@@ -20,7 +20,7 @@ import Foundation
 /// Individuals might vary significantly from that typical
 /// behavior, and few people are perfectly and consistently
 /// faithful to the precepts of their alignment.
-enum DnDAlignment: String {
+public enum DnDAlignment: String {
     case lawfulGood = "Lawful Good"
     case neutralGood = "Neutral Good"
     case chaoticGood = "Chaotic Good"
@@ -32,7 +32,7 @@ enum DnDAlignment: String {
     case chaoticEvil = "Chaotic Evil"
     
     /// This utility method can be usefull when importing alignments from JSON.
-    static func parse(alignment:String?) throws -> DnDAlignment {
+    public static func parse(alignment:String?) throws -> DnDAlignment {
         switch (alignment?.lowercased()) {
         case "lawful good", "lawful good (lg)", "lg":
             return lawfulGood
@@ -62,6 +62,7 @@ enum DnDAlignment: String {
     }
 }
 
-enum DnDAlignmentError : Error {
+// TODO: Extract to DnDError
+public enum DnDAlignmentError : Error {
     case unableToParse(String)
 }

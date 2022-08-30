@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DnDCircumstance {
+public enum DnDCircumstance {
     case advantage
     case disadvantage
     case neutral

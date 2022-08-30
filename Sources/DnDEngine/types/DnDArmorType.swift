@@ -10,7 +10,7 @@ import Foundation
 /// DnDArmorType is a collection of the common categories: light armor,
 /// medium armor, and heavy armor. Many warriors supplement their armor
 /// with a shield.
-enum DnDArmorType: String {
+public enum DnDArmorType: String {
     /// Made from supple and thin materials, light armor favors agile adventurers
     /// since it offers some protection without sacrificing mobility. If you wear
     /// light armor, you add your Dexterity modifier to the base number from your
@@ -36,7 +36,7 @@ enum DnDArmorType: String {
     /// Many warriors supplement their armor with a shield.
     case shield = "Shield"
     
-    var donTime: DnDDuration {
+    public var donTime: DnDDuration {
         get {
             switch(self) {
             case .light:
@@ -51,7 +51,7 @@ enum DnDArmorType: String {
         }
     }
     
-    var doffTime: DnDDuration {
+    public var doffTime: DnDDuration {
         get {
             switch(self) {
             case .light:

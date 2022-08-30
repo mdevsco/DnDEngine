@@ -12,22 +12,22 @@ import Foundation
 /// bursts of energetic movement in the midst of a life-threatening situation.
 ///
 /// *DnDPace* determine how far a character or monster can move in a minute, an hour, or a day.
-struct DnDSpeed {
-    var basic: DnDPace = DnDPace.normal
-    var fly: DnDPace = DnDPace.none
-    var swim: DnDPace = DnDPace.none
-    var burrow: DnDPace = DnDPace.none
-    var climb: DnDPace = DnDPace.none
-    var prone: DnDPace = DnDPace.none
+public struct DnDSpeed {
+    public var basic: DnDPace = DnDPace.normal
+    public var fly: DnDPace = DnDPace.none
+    public var swim: DnDPace = DnDPace.none
+    public var burrow: DnDPace = DnDPace.none
+    public var climb: DnDPace = DnDPace.none
+    public var prone: DnDPace = DnDPace.none
     
     
-    enum DnDPace: String {
+    public enum DnDPace: String {
         case fast = "Fast"
         case normal = "Normal"
         case slow = "Slow"
         case none = "N/A"
         
-        var feetPerMinute: Int {
+        public var feetPerMinute: Int {
             get {
                 switch(self){
                 case .fast:
@@ -42,7 +42,7 @@ struct DnDSpeed {
             }
         }
         
-        var milesPerHour: Int {
+        public var milesPerHour: Int {
             get {
                 switch(self){
                 case .fast:
@@ -57,7 +57,7 @@ struct DnDSpeed {
             }
         }
         
-        var feetPerDay: Int {
+        public var feetPerDay: Int {
             get {
                 switch(self){
                 case .fast:

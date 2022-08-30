@@ -32,25 +32,25 @@ import Foundation
 /// suspicion and skepticism when used in transactions. An electrum piece is
 /// worth five silver pieces, and a platinum piece is worth ten gold pieces.
 ///
-struct DnDCoins: CustomStringConvertible {
+public struct DnDCoins: CustomStringConvertible {
     /// Copper (cp)
-    var copper: Int = 0
+    public var copper: Int = 0
     
     /// Silver (sp) is equivalent to 10 copper pieces
-    var silver: Int = 0
+    public var silver: Int = 0
     
     /// Electrum (ep) is equivalent to 5 sivler pieces or 0.5 gold
-    var electrum: Int = 0
+    public var electrum: Int = 0
     
     /// Gold (gp) is equivalent to 10 sivler pieces
-    var gold: Int = 0
+    public var gold: Int = 0
     
     /// Platinum (pp) is equivalent to 10 gold pieces
-    var platinum: Int = 0
+    public var platinum: Int = 0
     
     /// A standard coin weighs about a third of an ounce, so fifty coins weigh a pound.
     /// Returns the computed weight of all the coins
-    var weight: Double {
+    public var weight: Double {
         let total = Double(copper + silver + electrum + gold + platinum);
         return (total > 0) ? total / 3 : 0;
     }
@@ -60,7 +60,7 @@ struct DnDCoins: CustomStringConvertible {
         copper + (silver*10) + (electrum*5*10) + (gold*10*10) + (platinum*10*10*10)
     }
     
-    var description: String {
+    public var description: String {
         var coins = "";
         if (copper > 0) {
             coins = "\(copper)cp "
@@ -82,7 +82,7 @@ struct DnDCoins: CustomStringConvertible {
     }
     
     // MARK: - Initializers
-    init(cp: Int = 0, sp: Int = 0, ep: Int = 0, gp: Int = 0, pp: Int = 0) {
+    public init(cp: Int = 0, sp: Int = 0, ep: Int = 0, gp: Int = 0, pp: Int = 0) {
         copper = cp
         silver = sp
         gold = gp
@@ -90,7 +90,7 @@ struct DnDCoins: CustomStringConvertible {
         electrum = ep
     }
     
-    static func tryParse(_ coinExpr:String) throws -> DnDCoins {
+    public static func tryParse(_ coinExpr:String) throws -> DnDCoins {
         var coins = DnDCoins()
         let slices = coinExpr.split(separator: " ")
         for slice in slices {
@@ -122,7 +122,7 @@ struct DnDCoins: CustomStringConvertible {
     
     ///  Combines coins into their higher value equivalent so that the pouch contains the fewest
     ///  coin pieces possible and thereby reducing the total weight of the pouch.
-    mutating func optimizeForWeight() {
+    public mutating func optimizeForWeight() {
         // convert coppers to silvers
         if (copper >= 10) {
             silver += copper / 10
@@ -150,7 +150,7 @@ struct DnDCoins: CustomStringConvertible {
     
     // MARK: - Operator Overrides
     
-    static func + (left: DnDCoins, right:DnDCoins) -> DnDCoins {
+    public static func + (left: DnDCoins, right:DnDCoins) -> DnDCoins {
         return DnDCoins(
             cp: left.copper + right.copper,
             sp: left.silver + right.silver,
@@ -159,7 +159,7 @@ struct DnDCoins: CustomStringConvertible {
             pp: left.platinum + right.platinum)
     }
     
-    static func += (left: inout DnDCoins, right: DnDCoins) {
+    public static func += (left: inout DnDCoins, right: DnDCoins) {
         left.copper = left.copper + right.copper
         left.silver = left.silver + right.silver
         left.electrum = left.electrum + right.electrum
@@ -167,25 +167,25 @@ struct DnDCoins: CustomStringConvertible {
         left.platinum = left.platinum + right.platinum
     }
     
-    static func < (left: DnDCoins, right:DnDCoins) -> Bool {
+    public static func < (left: DnDCoins, right:DnDCoins) -> Bool {
         left.value < right.value
     }
     
-    static func <= (left: DnDCoins, right:DnDCoins) -> Bool {
+    public static func <= (left: DnDCoins, right:DnDCoins) -> Bool {
         left.value <= right.value
     }
     
-    static func > (left: DnDCoins, right:DnDCoins) -> Bool {
+    public static func > (left: DnDCoins, right:DnDCoins) -> Bool {
         left.value > right.value
     }
     
-    static func >= (left: DnDCoins, right:DnDCoins) -> Bool {
+    public static func >= (left: DnDCoins, right:DnDCoins) -> Bool {
         left.value >= right.value
     }
     
-    ///TODO: Handle insufficent funds exception
-    ///TODO: Handle making change when precise coinage not availble
-    static func - (left: DnDCoins, right:DnDCoins) throws -> DnDCoins  {
+    // TODO: Handle insufficent funds exception
+    // TODO: Handle making change when precise coinage not availble
+    public static func - (left: DnDCoins, right:DnDCoins) throws -> DnDCoins  {
         if (left < right) {
             throw CoinError.insufficentFunds("Unabled to subtract (\(right)) from (\(left))")
         }
@@ -197,9 +197,9 @@ struct DnDCoins: CustomStringConvertible {
             pp: left.platinum - right.platinum)
     }
     
-    /// TODO: Handle insufficent funds exception
-    /// TODO: Handle making change when precise coinage not availble
-    static func -= (left: inout DnDCoins, right: DnDCoins) throws {
+    // TODO: Handle insufficent funds exception
+    // TODO: Handle making change when precise coinage not availble
+    public static func -= (left: inout DnDCoins, right: DnDCoins) throws {
         if (left >= right) {
             left.copper = left.copper - right.copper
             left.silver = left.silver - right.silver
@@ -212,7 +212,7 @@ struct DnDCoins: CustomStringConvertible {
     }
 }
 
-enum CointUnit: String {
+public enum CointUnit: String {
     case copper = "cp"
     case silver = "sp"
     case electrum = "ep"
@@ -220,7 +220,8 @@ enum CointUnit: String {
     case platinum = "pp"
 }
 
-enum CoinError : Error {
+// TODO: Move into DnDError
+public enum CoinError : Error {
     case insufficentFunds(String)
     case noExactChange(String)
     case unableToParse(String)

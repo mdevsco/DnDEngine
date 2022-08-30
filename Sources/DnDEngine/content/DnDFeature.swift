@@ -7,9 +7,9 @@
 
 import Foundation
 
-struct DnDFeature {
-    var name: String
-    var level: Int
-    var description: String
+public struct DnDFeature {
+    public var name: String
+    public var level: Int
+    public var description: String
   // TODO Need way to translate the description into actionable logic.
 }

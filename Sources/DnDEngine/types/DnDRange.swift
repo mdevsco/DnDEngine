@@ -8,7 +8,7 @@
 import Foundation
 
 /// Based on data from http://private-5e.wikidot.com/general:spells-by-range
-enum DnDRange {
+public enum DnDRange {
     case touch
     case oneSelf
     case unlimited

@@ -7,11 +7,11 @@
 
 import Foundation
 
-struct DnDBackground {
-    var name: String
-    var skillProficiencies: Set<DnDSkillType> = []
-    var languages: Set<DnDLanguage> = []
-    var equipment: [DnDItem] = [];
-    var coins = DnDCoins();
+public struct DnDBackground {
+    public var name: String
+    public var skillProficiencies: Set<DnDSkillType> = []
+    public var languages: Set<DnDLanguage> = []
+    public var equipment: [DnDItem] = [];
+    public var coins = DnDCoins();
     // TODO: Add support for Feature
 }

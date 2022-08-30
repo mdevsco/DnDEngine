@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DnDSpellComponent: String, Decodable {
+public enum DnDSpellComponent: String, Decodable {
     case verbal = "V"
     case somatic = "S"
     case material = "M"

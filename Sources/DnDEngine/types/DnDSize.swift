@@ -11,7 +11,7 @@ import Foundation
 /// Objects sometimes use the same size categories.
 
 
-enum DnDSize: String {
+public enum DnDSize: String {
     case tiny = "Tiny"
     case small = "Small"
     case medium = "Medium"
@@ -20,7 +20,7 @@ enum DnDSize: String {
     case gargantuan = "Gargantuan"
     
     /// The effective size in feet that the creature takes up
-    var sizeInFeet: Double {
+    public var sizeInFeet: Double {
         get {
             switch(self) {
             case .tiny:
@@ -39,7 +39,7 @@ enum DnDSize: String {
     }
     
     /// The effective size in "squares" that the creature takes up
-    var sizeInSquares: Double {
+    public var sizeInSquares: Double {
         get {
             return self.sizeInFeet / 5
         }

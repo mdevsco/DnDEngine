@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DnDDamageType: String {
+public enum DnDDamageType: String {
     case acid = "Acid"
     case bludgeoning = "Bludgeoning"
     case cold = "Cold"

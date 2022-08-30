@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DnDEncumberance: String {
+public enum DnDEncumberance: String {
     case none = "None"
     case light = "Light"
     case heavy = "Heavy"

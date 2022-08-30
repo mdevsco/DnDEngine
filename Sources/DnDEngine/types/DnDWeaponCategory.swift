@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum DnDWeaponCategory: String {
+public enum DnDWeaponCategory: String {
     case simpleMelee = "Simple Melee"
     case simpleRanged = "Simple Ranged"
     case martialMelee = "Martial Melee"
