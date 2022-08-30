@@ -14,11 +14,14 @@ import XCTest
 class DnDPlayerTest: XCTestCase {
  
     func testCreateNewPlayer() throws {
-        let player1 = DnDPlayer(name: "Drow Rogue 1", race: "Drow", dndClass: "Rogue")
+        let player1 = DnDPlayer(name: "Drow Rogue 1")
+        
+        player1.race = "Elf (Drow)"
+        player1.classType = DnDClassType.rogue
         
         player1.hitPoints = 8
         player1.hitDice = "1d8"
-        player1.speed.basic = .normal
+        player1.speed.basic = DnDPace.normal
         
         player1.strength.score = 8
         
