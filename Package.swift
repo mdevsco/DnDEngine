@@ -22,7 +22,7 @@ let package = Package(
         .target(
             name: "DnDEngine",
             dependencies: ["DiceKit"],
-            resources: [.process("resources")]
+            resources: [.process("Resources")]
         ),
         
         .testTarget(
