@@ -31,6 +31,10 @@ public struct DnDAbility: CustomStringConvertible {
                     return result + scoreBonus
                 case .racial(let scoreBonus, _):
                     return result + scoreBonus
+                case .euipment(let scoreBonus, _):
+                    return result + scoreBonus
+                case .spell(let scoreBonus, _):
+                    return result + scoreBonus
                 }
             }
             return ((score + totalBonus - 10) / 2)

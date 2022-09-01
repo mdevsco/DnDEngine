@@ -10,6 +10,6 @@ import Foundation
 public enum DnDBonus {
     case feat(Int, String)
     case racial(Int, String)
-    // TODO: equipment (Bonus)?
-    // TODO: spell (Bonus)?
+    case euipment(Int, String)
+    case spell(Int, String)
 }
