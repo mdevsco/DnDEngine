@@ -18,7 +18,7 @@ public struct DnDRace {
     /// Your speed determines how far you can move
     /// when traveling ( “Adventuring”) and
     /// fighting (“Combat”).
-    public var speed = DnDSpeed()
+    public var speeds: Set<DnDSpeed> = [DnDSpeed(30)]
     
     public var languages = Set<DnDLanguage>()
     public var languageChoices = Set<DnDLanguage>()
