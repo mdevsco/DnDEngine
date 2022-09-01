@@ -18,25 +18,24 @@
 // proficiency bonus to the attack roll.
 
 import Foundation
+import DiceKit
 
 /// Instances of this class are created for every player (or NPC?).  It contains all the active
-/// stats for the character as well as dynamically computed values for any stat that isn't
-/// configured at creation time.
+/// stats for the character as well as supporting derived/computed values.
 public class DnDPlayer {
     
-    /// Name of the creature.  For Monsters, this may be
-    /// a generic name whereas for Players it may be
-    /// unique to an individual.
+    /// The name by which the player wants to be identified
     public var name: String
     
-    /// A description of the creature.
+    /// A brief description of the player's background, personality, etc.
     public var description: String = ""
     
-    /// Experience the creature has
+    /// Experience the creature has starts at `0` at level `1` and can go as
+    /// high as `355000`
     public var xp: Int = 0
     
     /// The total hit points for this creature
-    public var maxHitPoints: Int = 0
+    public var maxHitPoints: Int?
     
     /// You gain the hit points from your new class as described for levels after 1st.
     /// You gain the 1st-level hit points for a class only when you are a 1st-level
@@ -50,14 +49,10 @@ public class DnDPlayer {
     /// 5/cleric 5, for example, you have five d10 Hit Dice and five d8 Hit Dice.
     public var hitPoints: Int = 0
     
-    // TODO: Need to support multiple hitDice see Paladin
-    // TODO: Need to compute number of dice by level (or ??)
-    /// This line gives the creature’s number and type of Hit Dice, and lists any bonus
-    /// hit points. A parenthetical note gives the average hit points for a creature of
-    /// the indicated number of Hit Dice. A creature’s Hit Dice total is also treated as
-    /// its level for determining how spells affect the creature, its rate of natural
-    /// healing, and its maximum ranks in a skill.
-    public var hitDice: String = "1d8"
+    /// One or more hit dice expressions for the player.  **NOTE** Most players will
+    /// only have a single hit die expression (e.g. `"4d6"`) except when multi-class like
+    /// **Paladin/Cleric** which may have multiple hit die expressions at higher levels.
+    public var hitDice: [Die]?
     
     /// The size of the player's
     public var size = DnDSize.medium
@@ -66,7 +61,7 @@ public class DnDPlayer {
     public var alignment = DnDAlignment.neutral
     
     /// The  player's various speeds
-    public var speed = DnDSpeed()
+    public var speeds: Set<DnDSpeed> = [DnDSpeed(30)]
     
     /// Languages spoken by creature
     public var languages: Set<DnDLanguage> = []
@@ -115,6 +110,10 @@ public class DnDPlayer {
     public var spellcastingAbility: DnDAbilityType? = nil
     
     public var inventory: Set<DnDItem> = []
+    
+    /// Any conditions that a player may be experiencing during game play.
+    /// TODO: Adding or removing conditions may alter the stats and/or modifiers in/out of a combat session
+    public var conditions: Set<DnDCondition> = []
     
     public var armorProficiencies: Set<DnDArmorType> = []
     public var equipment = DnDEquipment()
@@ -260,7 +259,7 @@ public class DnDPlayer {
     var proficiencyBonus: Int {
         // TODO: Is there a potential for bonuses to proficiency?
         get {
-         (1 + (self.level / 4))
+            (1 + Int(ceil(Double(self.level) / 4.0)))
         }
     }
     
