@@ -11,13 +11,13 @@ import Foundation
 /// This is also subclassed for specialized items like [DnDWeapon]
 public class DnDItem : Hashable {
     
-    /// Name of the [DnDItem]
+    /// Name of the item
     public var name: String
     
-    /// The weight of the [DnDItem]
+    /// The weight of the item
     public var weight: Double = 0
     
-    /// The cost of the [DnDItem] expressed as a coin expression (e.g. 1gp)
+    /// The cost of the item expressed as a coin expression (e.g. 1gp)
     public var cost: DnDCoins = DnDCoins(cp: 0, sp: 0, ep: 0, gp: 0, pp: 0)
     
     /// Description of the [DnDItem] and how it is to be used.
