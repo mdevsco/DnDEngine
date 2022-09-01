@@ -4,15 +4,33 @@ A powerful engine for DnD games and applications
 
 ## Overview
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin a purus ut nibh ullamcorper tempus eget mollis mauris. Donec lacinia velit eget vulputate semper. Nam eu bibendum lacus. Duis pellentesque justo vitae dolor mattis convallis. Sed convallis mollis facilisis. Cras a velit commodo, sagittis dui in, scelerisque urna. Etiam imperdiet suscipit nisi, vitae dapibus tellus lacinia eget. Curabitur dictum porttitor tortor sit amet cursus. Curabitur suscipit justo sed quam vulputate, ut commodo ligula malesuada. Praesent rutrum dolor at tempus porttitor. Aliquam sed augue et eros interdum gravida.
+The ``DnDEngine`` is broken down generally into two categories of API, **Content** and **Core**.  
 
-Sed vehicula libero nec aliquam congue. Vivamus tincidunt et ipsum id vehicula. Duis nulla est, pretium quis pharetra non, facilisis vel nulla. Proin placerat sapien sit amet arcu facilisis elementum. Nulla semper eget lacus vel elementum. Maecenas quis malesuada velit. In eleifend, massa vitae lacinia venenatis, tortor dolor pretium tellus, vel luctus sem justo ac mi. Nunc commodo condimentum ipsum, vitae aliquam eros ullamcorper non. In elementum eleifend sapien, eu eleifend erat dictum eget. Mauris pulvinar turpis ut enim finibus lacinia. Cras dapibus neque et tempus ullamcorper. Aliquam nec diam bibendum, dictum est eget, mollis lectus. Nullam at diam lacinia, porta felis eget, auctor magna. In sed porta metus, ut mollis dui. Morbi ut eros libero. Etiam eget eros purus.
+### Content
+The content structs are object instances of general shared data about things like Monsters, Classes, Races, Spells, Equipment, Lanaguages, Traits, etc.  Content may be referenced by the Core, but they are intented as static and non-mutable.
+
+> Each type of content has a `loadXXX()` static method that can be used to load data from a local database or a remote webservice.
+
+Content is generally intended as instructional for the user and otherwise have no facility to perform any kind of "in-game" action nor are they able to provide any kind of real-time player or monster state.  For this you need to use the Core portion of this API (See next)
+
+### Core
+The core classes and utilities are designed to provide an app with all of the necessary logic to store and alter state of players as they adventure and to also manage state during combat.  Much of the Core is designed around assisting with the caluations required when performing various "ability/skill checks" as well as other actions like attack rolls.
+
+In addition to managing player state, the Core also provides a DM with the ability to create and manage the state of their NPCs.  NPCs may also manifest during combat sessions (see ``DnDCombatSession``).
+
+### Networking
+The Networking aspect of the API is all about managing collaborative play between Player devices and the Dungeon Master.  **NOTE:** The engine can work in without use of any of these features.
 
 
 
 ## Topics
 
-### Types
+### Character Creation
+Nullam at diam lacinia, porta felis eget, auctor magna. In sed porta metus, ut mollis dui. Morbi ut eros libero. Etiam eget eros purus.
 
 - ``DnDAbilityType``
 - ``DnDSkillType``
+
+### Managing Adventure
+
+### Managing Combat
