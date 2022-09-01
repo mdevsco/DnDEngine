@@ -23,6 +23,11 @@ public struct DnDEngine {
         
     }
     
+    /// After you rest, you can spend Hit Dice to regain hit points
+    func rollRest() {
+        
+    }
+    
     func rollInitiative() {
         
     }
