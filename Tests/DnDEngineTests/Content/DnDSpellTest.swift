@@ -12,14 +12,14 @@ import XCTest
 
 class DnDSpellTest: XCTestCase {
     
-    func testLoadSpellsFromJSON() throws {
-        let data = SAMPLE_SPELL.data(using: .utf8)
-        let spells = try DnDSpell.loadFromData(data!)
-        
-        XCTAssertFalse(spells.isEmpty)
-        
-        print(spells[0])
-    }
+//    func testLoadSpellsFromJSON() throws {
+//        let data = SAMPLE_SPELL.data(using: .utf8)
+//        let spells = try DnDSpell.loadFromData(data!)
+//        
+//        XCTAssertFalse(spells.isEmpty)
+//        
+//        print(spells[0])
+//    }
 }
 
 let SAMPLE_SPELL = """

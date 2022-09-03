@@ -72,20 +72,4 @@ extension DnDSpell: Decodable {
         // assign enum
         self.school = schoolEnum
     }
-    
-    public static func loadFromFile(_ filename: String) throws -> [DnDSpell] {
-        guard let sourceURL = Bundle.module.url(forResource: filename, withExtension: "json") else {
-            fatalError("Could not find \(filename).json")
-        }
-        
-        guard let data = try? Data(contentsOf: sourceURL) else {
-            fatalError("Could not convert to data")
-        }
-        
-        return try loadFromData(data)
-    }
-    
-    public static func loadFromData(_ data:Data) throws -> [DnDSpell] {
-        return try JSONDecoder().decode([DnDSpell].self, from: data)
-    }
 }

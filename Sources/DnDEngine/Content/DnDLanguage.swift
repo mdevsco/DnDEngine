@@ -43,16 +43,16 @@ extension DnDLanguage: Decodable {
         case script
     }
     
-    public static func loadFromFile() throws -> [DnDLanguage] {
-        guard let sourceURL = Bundle.module.url(forResource: "5e-SRD-Languages", withExtension: "json") else {
-            fatalError("Could not find 5e-SRD-Languages.json")
-        }
-        
-        guard let data = try? Data(contentsOf: sourceURL) else {
-            fatalError("Could not convert to data")
-        }
-        
-        let decoder = JSONDecoder()
-        return try decoder.decode([DnDLanguage].self, from: data)
-    }
+//    public static func loadFromFile() throws -> [DnDLanguage] {
+//        guard let sourceURL = Bundle.module.url(forResource: "5e-SRD-Languages", withExtension: "json") else {
+//            fatalError("Could not find 5e-SRD-Languages.json")
+//        }
+//        
+//        guard let data = try? Data(contentsOf: sourceURL) else {
+//            fatalError("Could not convert to data")
+//        }
+//        
+//        let decoder = JSONDecoder()
+//        return try decoder.decode([DnDLanguage].self, from: data)
+//    }
 }
