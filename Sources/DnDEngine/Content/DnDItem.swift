@@ -1,6 +1,6 @@
 //
 //  DnDItem.swift
-//  
+//  TODO: Do items need a "startingCount" (e.g. ammunition, arrows, etc)
 //
 //  Created by Rodney Aiglstorfer on 8/22/22.
 //
