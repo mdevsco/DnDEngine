@@ -56,7 +56,7 @@ public struct DnDCoins: CustomStringConvertible {
     }
     
     /// The effective total value of the pouch expressed in coppers (lowest common denominator)
-    private var value: Int {
+    public var value: Int {
         copper + (silver*10) + (electrum*5*10) + (gold*10*10) + (platinum*10*10*10)
     }
     
