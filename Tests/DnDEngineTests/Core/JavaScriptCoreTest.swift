@@ -109,6 +109,7 @@ class JavaScriptCoreTest: XCTestCase {
 
             let loadPeople = ctx.objectForKeyedSubscript("loadPeople")!
             let people = loadPeople.call(withArguments: [json])!.toArray()
+            XCTAssertEqual(people?.count, 3)
         }
     }
 
