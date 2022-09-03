@@ -31,9 +31,11 @@ public struct DnDAbility: CustomStringConvertible {
                     return result + scoreBonus
                 case .racial(let scoreBonus, _):
                     return result + scoreBonus
-                case .euipment(let scoreBonus, _):
+                case .equipment(let scoreBonus, _):
                     return result + scoreBonus
                 case .spell(let scoreBonus, _):
+                    return result + scoreBonus
+                case .item(let scoreBonus, _):
                     return result + scoreBonus
                 }
             }
