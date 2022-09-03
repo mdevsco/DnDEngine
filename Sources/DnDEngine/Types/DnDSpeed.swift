@@ -12,25 +12,14 @@ import Foundation
 /// bursts of energetic movement in the midst of a life-threatening situation.
 public struct DnDSpeed {
     
-    public enum MovementType {
-        case basic
-        case fly
-        case swim
-        case burrow
-        case climb
-        case prone
-    }
-    public enum UnitType {
-        case feet
-        case other(String)
-    }
+    
     
     public let amount: Int
-    public let movement: MovementType
-    public let units: UnitType
+    public let movement: DnDMovementType
+    public let units: DnDDistanceType
     
     /// If you create a `DnDSpeed(30)` it will default to "basic 30 ft"
-    init(_ amount: Int, movement: MovementType = .basic, units: UnitType = .feet) {
+    init(_ amount: Int, movement: DnDMovementType = .basic, units: DnDDistanceType = .feet) {
         self.amount = amount
         self.movement = movement
         self.units = units
