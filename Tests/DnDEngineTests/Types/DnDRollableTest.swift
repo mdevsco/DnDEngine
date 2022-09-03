@@ -38,8 +38,8 @@ class DnDRollableTest: XCTestCase {
         XCTAssertEqual(rollable.roll().highest(3).count, 3)
         XCTAssertEqual(rollable.roll().lowest(3).count, 3)
         
-        let lowest3 = try! roll("4d6").lowest(3)
-        XCTAssertEqual(lowest3.count, 3)
+        let lowest3 = try! roll("4d6").lowest()
+        XCTAssertEqual(lowest3.count, 1)
         let highest2 = try! roll("4d6").highest(2)
         XCTAssertEqual(highest2.count, 2)
         
