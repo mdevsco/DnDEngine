@@ -18,7 +18,6 @@
 // proficiency bonus to the attack roll.
 
 import Foundation
-import DiceKit
 
 /// Instances of this class are created for every player (or NPC?).  It contains all the active
 /// stats for the character as well as supporting derived/computed values.
@@ -28,31 +27,18 @@ public class DnDPlayer {
     public var name: String
     
     /// A brief description of the player's background, personality, etc.
-    public var description: String = ""
+    public var description: String?
+    
+    /// Race refers to the fantasy species or ancestry of a character.
+    public var race: String?
+    
+    /// There are 12 basic classes in D&D: Barbarian, bard, cleric, druid, fighter, monk,
+    /// paladin, ranger, rogue, sorcerer, warlock and wizard.
+    public var dndClass: DnDClass?
     
     /// Experience the creature has starts at `0` at level `1` and can go as
     /// high as `355000`
     public var xp: Int = 0
-    
-    /// The total hit points for this creature
-    public var maxHitPoints: Int?
-    
-    /// You gain the hit points from your new class as described for levels after 1st.
-    /// You gain the 1st-level hit points for a class only when you are a 1st-level
-    /// character.
-    ///
-    /// You add together the Hit Dice granted by all your classes to form your pool
-    /// of Hit Dice. If the Hit Dice are the same die type, you can simply pool them
-    /// together. For example, both the fighter and the paladin have a d10, so if you
-    /// are a paladin 5/fighter 5, you have ten d10 Hit Dice. If your classes give you
-    /// Hit Dice of different types, keep track of them separately. If you are a paladin
-    /// 5/cleric 5, for example, you have five d10 Hit Dice and five d8 Hit Dice.
-    public var hitPoints: Int = 0
-    
-    /// One or more hit dice expressions for the player.  **NOTE** Most players will
-    /// only have a single hit die expression (e.g. `"4d6"`) except when multi-class like
-    /// **Paladin/Cleric** which may have multiple hit die expressions at higher levels.
-    public var hitDice: [Die]?
     
     /// The size of the player's
     public var size = DnDSize.medium
@@ -68,6 +54,27 @@ public class DnDPlayer {
     
     /// The weight of the player typically defined by the ``DnDRace``
     public var weight: Double = 0
+    
+    /// The total hit points for this creature
+    public var maxHitPoints: Int?
+    
+    /// You gain the hit points from your new class as described for levels after 1st.
+    /// You gain the 1st-level hit points for a class only when you are a 1st-level
+    /// character.
+    ///
+    /// You add together the Hit Dice granted by all your classes to form your pool
+    /// of Hit Dice. If the Hit Dice are the same die type, you can simply pool them
+    /// together. For example, both the fighter and the paladin have a d10, so if you
+    /// are a paladin 5/fighter 5, you have ten d10 Hit Dice. If your classes give you
+    /// Hit Dice of different types, keep track of them separately. If you are a paladin
+    /// 5/cleric 5, for example, you have five d10 Hit Dice and five d8 Hit Dice.
+    public var hitPoints: Int?
+    
+    /// One or more hit dice expressions for the player.  **NOTE** Most players will
+    /// only have a single hit die expression (e.g. `"4d6"`) except when multi-class like
+    /// **Paladin/Cleric** which may have multiple hit die expressions at higher levels.
+    public var hitDice: DnDDie?
+    
     
     /// Some spells and special abilities confer temporary hit points to a creature.
     /// Temporary hit points aren't actual hit points; they are a buffer against damage,
@@ -96,18 +103,13 @@ public class DnDPlayer {
     /// until they're depleted or you finish a long rest.
     public var tempHitPoints: Int = 0
     
-    /// Race refers to the fantasy species or ancestry of a character.
-    public var race: String? = nil
-    
-    /// There are 12 basic classes in D&D: Barbarian, bard, cleric, druid, fighter, monk,
-    /// paladin, ranger, rogue, sorcerer, warlock and wizard.
-    public var classType: DnDClassType? = nil
+
     
     /// Your Spellcasting Ability is determined by which base ability your character
     /// uses to power their spells. For example, Sorcerers get their spellcasting power
     /// from their Charisma, so their Spellcasting Ability is Charisma. Your Spellcasting
     /// Ability modifier is a number taken from the ability used to power the spells.
-    public var spellcastingAbility: DnDAbilityType? = nil
+    public var spellcastingAbility: DnDAbilityType?
     
     public var inventory: Set<DnDItem> = []
     
@@ -127,6 +129,25 @@ public class DnDPlayer {
     public var wisdom = DnDAbility(DnDAbilityType.wisdom)
     public var charisma = DnDAbility(DnDAbilityType.charisma)
     
+    public func ability(for type:DnDAbilityType) -> DnDAbility {
+ 
+        switch (type) {
+        case DnDAbilityType.strength:
+            return self.strength
+        case DnDAbilityType.dexterity:
+            return self.dexterity
+        case DnDAbilityType.constitution:
+            return self.constitution
+        case DnDAbilityType.intelligence:
+            return self.intelligence
+        case DnDAbilityType.wisdom:
+            return self.wisdom
+        case DnDAbilityType.charisma:
+            return self.charisma
+        }
+    }
+    
+        
     // MARK: - Skills
     // Strength
     public lazy var athletics = DnDSkill(.athletics) { self.strength.modifier }
