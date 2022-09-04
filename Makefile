@@ -1,4 +1,4 @@
-all: clean docc
+all: clean docc publish
 
 docc:
 	swift package --allow-writing-to-directory ./docs \
@@ -12,3 +12,7 @@ clean:
 
 preview:
 	swift package --disable-sandbox preview-documentation --target DnDEngine
+
+publish:
+	git commit -m "Regenerated Documentation" ./docs
+	git push
