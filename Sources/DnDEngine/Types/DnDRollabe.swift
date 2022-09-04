@@ -66,7 +66,7 @@ public class DnDRollable {
     
     /// Parses a dice "expression"  (e,.g. 2d6) into a ``DnDRollable`` object
     /// - Parameter expression: Any valid DnD die expressed (ex. 4d6 or 2d20)
-    convenience init(_ expression: String) throws {
+    public convenience init(_ expression: String) throws {
         let matches = try expression.extractMatches(#"(\d)+d(\d+)"#)
         if (matches.isEmpty || matches.count != 2) {
             throw DnDError.unableToParse("Unable to parse dice expression '\(expression)'")

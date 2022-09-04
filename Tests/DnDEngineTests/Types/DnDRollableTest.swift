@@ -26,17 +26,17 @@ class DnDRollableTest: XCTestCase {
     }
     
     func testRolls() throws {
-        var rollable = DnDRollable(count: 4, die: .d6)
-        
-        XCTAssertEqual(rollable.roll().results.count, 4)
-        XCTAssertEqual(rollable.roll().highest(3).count, 3)
-        XCTAssertEqual(rollable.roll().lowest(3).count, 3)
-        
-        rollable = try! DnDRollable("4d6")
-        
-        XCTAssertEqual(rollable.roll().results.count, 4)
-        XCTAssertEqual(rollable.roll().highest(3).count, 3)
-        XCTAssertEqual(rollable.roll().lowest(3).count, 3)
+//        var rollable = DnDRollable(count: 4, die: .d6)
+//        
+//        XCTAssertEqual(rollable.roll().results.count, 4)
+//        XCTAssertEqual(rollable.roll().highest(3).count, 3)
+//        XCTAssertEqual(rollable.roll().lowest(3).count, 3)
+//        
+//        rollable = try! DnDRollable("4d6")
+//        
+//        XCTAssertEqual(rollable.roll().results.count, 4)
+//        XCTAssertEqual(rollable.roll().highest(3).count, 3)
+//        XCTAssertEqual(rollable.roll().lowest(3).count, 3)
         
         let lowest3 = try! roll("4d6").lowest()
         XCTAssertEqual(lowest3.count, 1)

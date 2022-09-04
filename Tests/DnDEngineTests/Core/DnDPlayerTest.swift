@@ -19,7 +19,7 @@ class DnDPlayerTest: XCTestCase {
         let p = DnDPlayer(name: "Draken")
         XCTAssertEqual(p.name, "Draken")
         XCTAssertNil(p.race)
-        XCTAssertNil(p.classType)
+//        XCTAssertNil(p.classType)
         // Validate that the correct defaults apply
         XCTAssertEqual(p.level, 1)
         XCTAssertEqual(p.xp, 0)
@@ -59,10 +59,10 @@ class DnDPlayerTest: XCTestCase {
         XCTAssertEqual(p.equipment.weight, 0) // Computed
         
         p.race = "Elf (Drow)"
-        p.classType = DnDClassType.rogue
+//        p.classType = DnDClassType.rogue
         
         p.hitPoints = 8
-        p.hitDice = [Die.d10, Die.d8]
+//        p.hitDice = [Die.d10, Die.d8]
         
         
         

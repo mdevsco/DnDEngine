@@ -1,3 +1,6 @@
+import Foundation
+import DiceKit
+
 public struct DnDEngine {
     var players: [DnDPlayer]
 
@@ -32,8 +35,9 @@ public struct DnDEngine {
         
     }
     
-    func rollSavingThrow() {
-        
+    func rollSavingThrow(player: DnDPlayer, completion: (Roll, DnDPlayer) -> Void) {
+        let roll = try? Die("2d20").roll(times: 1, .dropLowest)
+        completion(roll!, player)
     }
     
     func abilityCheck() {
