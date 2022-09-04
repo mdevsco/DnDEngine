@@ -5,7 +5,7 @@ docc:
 	generate-documentation --target DnDEngine \
 	--disable-indexing \
 	--transform-for-static-hosting \
-	--hosting-base-path /DnDEngine \
+	--hosting-base-path DnDEngine \
 	--output-path ./docs
 clean:
 	rm -Rf ./docs/*
