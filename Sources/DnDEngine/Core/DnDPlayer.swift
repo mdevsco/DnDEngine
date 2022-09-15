@@ -18,6 +18,7 @@
 // proficiency bonus to the attack roll.
 
 import Foundation
+import DiceKit
 
 /// Instances of this class are created for every player (or NPC?).  It contains all the active
 /// stats for the character as well as supporting derived/computed values.
@@ -30,11 +31,11 @@ public class DnDPlayer {
     public var description: String?
     
     /// Race refers to the fantasy species or ancestry of a character.
-    public var race: String?
+    public var race: String? // TODO: Refactor to support DnDRace
     
     /// There are 12 basic classes in D&D: Barbarian, bard, cleric, druid, fighter, monk,
     /// paladin, ranger, rogue, sorcerer, warlock and wizard.
-    public var dndClass: DnDClass?
+    public var `class`: String? // TODO: Refactor to support DnDClass
     
     /// Experience the creature has starts at `0` at level `1` and can go as
     /// high as `355000`
@@ -43,67 +44,24 @@ public class DnDPlayer {
     /// The size of the player's
     public var size = DnDSize.medium
     
+    /// The time interval a player must wait before they can roll to restore health
+    ///  **NOTE** Defaults to 1hr for a `shortInterval` and 8hrs for a `longInterval`
+    public var restInterval = DnDRestInterval()
+    
     /// The player's alignment
     public var alignment = DnDAlignment.neutral
     
     /// The  player's various speeds
-    public var speeds: Set<DnDSpeed> = [DnDSpeed(30)]
+    public var speeds = DnDSpeeds()
     
     /// Languages spoken by creature
-    public var languages: Set<DnDLanguage> = []
+    public var languages: Set<String> = ["Common"]
     
     /// The weight of the player typically defined by the ``DnDRace``
     public var weight: Double = 0
     
-    /// The total hit points for this creature
-    public var maxHitPoints: Int?
-    
-    /// You gain the hit points from your new class as described for levels after 1st.
-    /// You gain the 1st-level hit points for a class only when you are a 1st-level
-    /// character.
-    ///
-    /// You add together the Hit Dice granted by all your classes to form your pool
-    /// of Hit Dice. If the Hit Dice are the same die type, you can simply pool them
-    /// together. For example, both the fighter and the paladin have a d10, so if you
-    /// are a paladin 5/fighter 5, you have ten d10 Hit Dice. If your classes give you
-    /// Hit Dice of different types, keep track of them separately. If you are a paladin
-    /// 5/cleric 5, for example, you have five d10 Hit Dice and five d8 Hit Dice.
-    public var hitPoints: Int?
-    
-    /// One or more hit dice expressions for the player.  **NOTE** Most players will
-    /// only have a single hit die expression (e.g. `"4d6"`) except when multi-class like
-    /// **Paladin/Cleric** which may have multiple hit die expressions at higher levels.
-    public var hitDice: DnDDie?
-    
-    
-    /// Some spells and special abilities confer temporary hit points to a creature.
-    /// Temporary hit points aren't actual hit points; they are a buffer against damage,
-    /// a pool of hit points that protect you from injury.
-    ///
-    /// When you have temporary hit points and take damage, the temporary hit points
-    /// are lost first, and any leftover damage carries over to your normal hit points. For
-    /// example, if you have 5 temporary hit points and take 7 damage, you lose the
-    /// temporary hit points and then take 2 damage.
-    ///
-    /// Because temporary hit points are separate from your actual hit points, they can
-    /// exceed your hit point maximum. A character can, therefore, be at full hit points
-    /// and receive temporary hit points.
-    ///
-    /// Healing can't restore temporary hit points, and they can't be added together. If
-    /// you have temporary hit points and receive more of them, you decide whether to
-    /// keep the ones you have or to gain the new ones. For example, if a spell grants
-    /// you 12 temporary hit points when you already have 10, you can have 12 or 10,
-    /// not 22.
-    ///
-    /// If you have 0 hit points, receiving temporary hit points doesn't restore you to
-    /// consciousness or stabilize you. They can still absorb damage directed at you
-    /// while you're in that state, but only true healing can save you.
-    ///
-    /// Unless a feature that grants you temporary hit points has a duration, they last
-    /// until they're depleted or you finish a long rest.
-    public var tempHitPoints: Int = 0
-    
-
+    /// The hitpoints and hitdie information about the health state of the player
+    public var health = DnDHealth()
     
     /// Your Spellcasting Ability is determined by which base ability your character
     /// uses to power their spells. For example, Sorcerers get their spellcasting power
@@ -111,78 +69,35 @@ public class DnDPlayer {
     /// Ability modifier is a number taken from the ability used to power the spells.
     public var spellcastingAbility: DnDAbilityType?
     
-    public var inventory: Set<DnDItem> = []
     
     /// Any conditions that a player may be experiencing during game play.
     /// TODO: Adding or removing conditions may alter the stats and/or modifiers in/out of a combat session
     public var conditions: Set<DnDCondition> = []
     
     public var armorProficiencies: Set<DnDArmorType> = []
+    public var inventory: Set<DnDItem> = []
     public var equipment = DnDEquipment()
     public var coins = DnDCoins()
     
-    // MARK: - Abilities
-    public var strength = DnDAbility(DnDAbilityType.strength)
-    public var dexterity = DnDAbility(DnDAbilityType.dexterity)
-    public var constitution = DnDAbility(DnDAbilityType.constitution)
-    public var intelligence = DnDAbility(DnDAbilityType.intelligence)
-    public var wisdom = DnDAbility(DnDAbilityType.wisdom)
-    public var charisma = DnDAbility(DnDAbilityType.charisma)
+    // MARK: - Resistance, vulnerabilitys and immunities
+    /// If a creature or an object has resistance to a
+    /// ``DnDCondition`` of that type is halved against it.
+    public var resistances: [DnDCondition] = [] // TODO: should this be for conditions or damage type?
     
-    public func ability(for type:DnDAbilityType) -> DnDAbility {
- 
-        switch (type) {
-        case DnDAbilityType.strength:
-            return self.strength
-        case DnDAbilityType.dexterity:
-            return self.dexterity
-        case DnDAbilityType.constitution:
-            return self.constitution
-        case DnDAbilityType.intelligence:
-            return self.intelligence
-        case DnDAbilityType.wisdom:
-            return self.wisdom
-        case DnDAbilityType.charisma:
-            return self.charisma
-        }
-    }
+    /// If a creature or an object has vulnerability to a
+    /// damage type, damage of that type is doubled against it.
+    public var vulnerabilies: [DnDDamageType] = []
+    
+    public var immunities: [DnDDamageType] = [] // TODO: should this be for conditions or damage type?
+    
+    // MARK: - Abilities
+    public var abilities = DnDAbilities()
+
     
         
     // MARK: - Skills
-    // Strength
-    public lazy var athletics = DnDSkill(.athletics) { self.strength.modifier }
-    
-    // Dexterity
-    public lazy var acrobatics  = DnDSkill(.acrobatics){ self.dexterity.modifier }
-    public lazy var sleightOfHand  = DnDSkill(.sleightOfHand){ self.dexterity.modifier }
-    public lazy var stealth  = DnDSkill(.stealth){ self.dexterity.modifier }
-    
-    // Intelligence
-    public lazy var arcana = DnDSkill(.arcana){ self.intelligence.modifier }
-    public lazy var history  = DnDSkill(.history){ self.intelligence.modifier }
-    public lazy var investigation  = DnDSkill(.investigation){ self.intelligence.modifier }
-    public lazy var nature  = DnDSkill(.nature){ self.intelligence.modifier }
-    public lazy var religion  = DnDSkill(.religion){ self.intelligence.modifier }
-    
-    // Wisdom
-    lazy var animalHandling  = DnDSkill(.animalHandling){ self.wisdom.modifier }
-    lazy var insight  = DnDSkill(.insight){ self.wisdom.modifier }
-    lazy var medicine  = DnDSkill(.medicine){ self.wisdom.modifier }
-    lazy var perception  = DnDSkill(.perception){ self.wisdom.modifier }
-    lazy var survival  = DnDSkill(.survival){ self.wisdom.modifier }
-    
-    // Charisma
-    public lazy var deception  = DnDSkill(.deception){ self.charisma.modifier }
-    public lazy var intimidation  = DnDSkill(.intimidation){ self.charisma.modifier }
-    public lazy var performance  = DnDSkill(.performance){ self.charisma.modifier }
-    public lazy var persuasion  = DnDSkill(.persuasion){ self.charisma.modifier }
+    public lazy var skills = DnDSkills(abilities: self.abilities)
 
-    // MARK: - Initializers
-    
-    /// Quick initializer for a creature
-    public init(name: String) {
-        self.name = name
-    }
 
     // MARK: - Computed Values
     
@@ -198,21 +113,21 @@ public class DnDPlayer {
     /// Effect hits the intended target. Your Attack bonus with a spell Attack equals your
     /// Spellcasting ability modifier + your Proficiency bonus. Most Spells that require Attack
     /// rolls involve Ranged Attacks.
-    var spellAttackBonus: Int {
+    public var spellAttackBonus: Int {
         get {
             switch (spellcastingAbility) {
             case .strength:
-                return proficiencyBonus + strength.modifier
+                return proficiencyBonus + abilities.strength.modifier
             case .dexterity:
-                return proficiencyBonus + dexterity.modifier
+                return proficiencyBonus + abilities.dexterity.modifier
             case .constitution:
-                return proficiencyBonus + constitution.modifier
+                return proficiencyBonus + abilities.constitution.modifier
             case .wisdom:
-                return proficiencyBonus + wisdom.modifier
+                return proficiencyBonus + abilities.wisdom.modifier
             case .intelligence:
-                return proficiencyBonus + intelligence.modifier
+                return proficiencyBonus + abilities.intelligence.modifier
             case .charisma:
-                return proficiencyBonus + charisma.modifier
+                return proficiencyBonus + abilities.charisma.modifier
             default:
                 return 0
             }
@@ -234,29 +149,29 @@ public class DnDPlayer {
     ///
     /// Some spells and class features give you a different way to calculate your AC. If you have
     /// multiple features that give you different ways to calculate your AC, you choose which one to use.
-    var armorClass: Int {
+    public var armorClass: Int {
         // TODO: If player wears armor or shield calculate AC using Equipment rules
-        return 10 + dexterity.modifier
+        return 10 + abilities.dexterity.modifier
     }
     
     /// The total combined weight of the player and everything they are carrying.
-    var totalWeight: Double {
+    public var totalWeight: Double {
         get {
             self.weight + self.coins.weight + self.inventory.reduce(0) {$0 + $1.weight} + self.equipment.weight;
         }
     }
     
     /// The maximum carry capacity for the player
-    var carryCapacity: Int {
+    public var carryCapacity: Int {
         get {
-            self.strength.score * 15;
+            abilities.strength.score * 15;
         }
     }
     
     /// The player's level of ``DnDEncumberance`` based on their ``carryCapacity``.
-    var encumbered: DnDEncumberance {
+    public var encumbered: DnDEncumberance {
         get {
-            let score = self.strength.score
+            let score = abilities.strength.score
             let encumberedWeight = score * 5
             let heavilyEmcumberedWeight = score * 10
             if (score < encumberedWeight) {
@@ -277,7 +192,7 @@ public class DnDPlayer {
     }
     
     /// The player's proficiency bonus.
-    var proficiencyBonus: Int {
+    public var proficiencyBonus: Int {
         // TODO: Is there a potential for bonuses to proficiency?
         get {
             (1 + Int(ceil(Double(self.level) / 4.0)))
@@ -285,10 +200,10 @@ public class DnDPlayer {
     }
     
     /// The initiative modifier value for the player, used by the ``DnDEngine.rollInitiative``.
-    var initiative: Int {
+    public var initiative: Int {
         get {
             // TODO: How to compute initiative
-            self.dexterity.modifier
+            abilities.dexterity.modifier
         }
     }
     
@@ -296,9 +211,9 @@ public class DnDPlayer {
     /// them without actively examining their surroundings. You calculate your score
     /// by adding 10 to their perception modifier, which is their Wisdom modifier plus
     /// their proficiency bonus if proficient.
-    var passivePerception: Int {
+    public var passivePerception: Int {
         get {
-            return 10 + wisdom.modifier
+            return 10 + abilities.wisdom.modifier
         }
     }
     
@@ -312,7 +227,7 @@ public class DnDPlayer {
     /// campaign, your DM might decide to have you begin at a higher level, on the
     /// assumption that your character has already survived a few harrowing
     /// adventures.
-    var level: Int {
+    public var level: Int {
         get {
             convertXPToLevel(self.xp)
         }
@@ -322,6 +237,13 @@ public class DnDPlayer {
         set (newLevel) {
             self.xp = convertLevelToXP(newLevel)
         }
+    }
+    
+    // MARK: - Initializers
+    
+    /// Quick initializer for a creature
+    public init(name: String) {
+        self.name = name
     }
 }
 

@@ -7,6 +7,15 @@
 
 import Foundation
 
+public class DnDAbilities {
+    public var strength = DnDAbility(DnDAbilityType.strength)
+    public var dexterity = DnDAbility(DnDAbilityType.dexterity)
+    public var constitution = DnDAbility(DnDAbilityType.constitution)
+    public var intelligence = DnDAbility(DnDAbilityType.intelligence)
+    public var wisdom = DnDAbility(DnDAbilityType.wisdom)
+    public var charisma = DnDAbility(DnDAbilityType.charisma)
+}
+
 public struct DnDAbility: CustomStringConvertible {
     
     /// Each of a creature’s abilities has a score, a number that defines the

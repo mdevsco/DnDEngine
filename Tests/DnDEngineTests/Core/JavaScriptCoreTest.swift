@@ -8,10 +8,12 @@
 import XCTest
 import JavaScriptCore
 
+
+
 class JavaScriptCoreTest: XCTestCase {
 
     let ctx = JSContext()!
-
+    
     func testSimpleExpression() throws {
         let result = ctx.evaluateScript("1 + 2 + 3")
         XCTAssertEqual(result?.toInt32(), 6)
@@ -51,7 +53,7 @@ class JavaScriptCoreTest: XCTestCase {
                 return number * 3;
             }
         """#)
-
+        
         let triple = ctx.objectForKeyedSubscript("triple")
         XCTAssertEqual(triple?.call(withArguments: [9])?.toInt32(), 27)
     }
@@ -66,52 +68,74 @@ class JavaScriptCoreTest: XCTestCase {
         let quadruple: @convention(block) (Int) -> Int = { input in
             return input * 4
         }
-
+        
         ctx.setObject(quadruple,
-                          forKeyedSubscript: "quadruple" as NSString)
+                      forKeyedSubscript: "quadruple" as NSString)
         
         XCTAssertEqual(ctx.evaluateScript("quadruple(3)")?.toInt32(), 12)
-
+        
         XCTAssertEqual(ctx.objectForKeyedSubscript("quadruple")?.call(withArguments: [3])?.toInt32(), 12)
     }
     
     // Passing Swift Objects between Swift and JavaScript
     func testPassSwiftObjects() throws {
         
-            
-            // Registering the Class in the JavaScript Context
-            ctx.setObject(Person.self,
-                              forKeyedSubscript: "Person" as NSString)
-            
-            // Instantiating Swift Classes from JavaScript
-            ctx.evaluateScript(#"""
+        
+        // Registering the Class in the JavaScript Context
+        ctx.setObject(Person.self,
+                      forKeyedSubscript: "Person" as NSString)
+        
+        // Instantiating Swift Classes from JavaScript
+        ctx.evaluateScript(#"""
             function loadPeople(json) {
                 return JSON.parse(json).map((attributes) => {
                     let person = Person.createWithFirstNameLastName(
                     attributes.first,
                     attributes.last
                 )
-
+            
                 person.birthYear = attributes.year;
-
+            
                 return person;
                 });
             }
             """#)
-            
-            let json = """
+        
+        let json = """
             [
                 { "first": "Grace", "last": "Hopper", "year": 1906 },
                 { "first": "Ada", "last": "Lovelace", "year": 1815 },
                 { "first": "Margaret", "last": "Hamilton", "year": 1936 }
             ]
             """
-
-            let loadPeople = ctx.objectForKeyedSubscript("loadPeople")!
-            let people = loadPeople.call(withArguments: [json])!.toArray()
-            XCTAssertEqual(people?.count, 3)
-        }
+        
+        let loadPeople = ctx.objectForKeyedSubscript("loadPeople")!
+        let people = loadPeople.call(withArguments: [json])!.toArray()
+        XCTAssertEqual(people?.count, 3)
     }
+    
+    func testParseJSFile() throws {
+        let testBundle = Bundle(for: type(of: self))
+        XCTAssertNotNil(testBundle)
+
+        let file = "DnDRace_Elf"
+
+        guard let url = testBundle.url(forResource: file, withExtension: "js") else {
+            fatalError("Unable to find resource \(file)")
+        }
+
+        guard let data = try? Data(contentsOf: url) else {
+            fatalError("Failed to load \(file) from bundle.")
+        }
+        
+        let js = String(decoding: data, as: UTF8.self)
+
+        ctx.evaluateScript(js)
+        XCTAssertEqual(ctx.objectForKeyedSubscript("name"), NSString("Elf") )
+                
+                
+    }
+}
 
 
 
@@ -121,9 +145,9 @@ class JavaScriptCoreTest: XCTestCase {
     var firstName: String { get set }
     var lastName: String { get set }
     var birthYear: NSNumber? { get set }
-
+    
     var fullName: String { get }
-
+    
     // Imported as `Person.createWithFirstNameLastName(_:_:)`
     static func createWith(firstName: String, lastName: String) -> Person
 }
@@ -134,16 +158,16 @@ class JavaScriptCoreTest: XCTestCase {
     dynamic var firstName: String
     dynamic var lastName: String
     dynamic var birthYear: NSNumber?
-
+    
     required init(firstName: String, lastName: String) {
         self.firstName = firstName
         self.lastName = lastName
     }
-
+    
     var fullName: String {
         return "\(firstName) \(lastName)"
     }
-
+    
     class func createWith(firstName: String, lastName: String) -> Person {
         return Person(firstName: firstName, lastName: lastName)
     }
